@@ -1,5 +1,12 @@
+:root {
+  --main-bg-color: #ffc8dd;
+  --main-text-color: #3a0ca3;
+  --main-alt-text-color: #444;
+}
+
 body {
   align-items: center;
+  background-color: var(--main-bg-color);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -14,6 +21,23 @@ canvas {
   margin-bottom: auto;
 }
 
-h1 {
+header {
+  text-align: center;
+}
+
+header h1 {
   font-family: 'Outfit', sans-serif;
+  color: var(--main-text-color);
+  margin-bottom: 10px;
+}
+
+header p {
+  font-family: 'Outfit', sans-serif;
+  color: var(--main-alt-text-color);
+  font-variation-settings: 'wght' 375, 'GRAD' 88;
+}
+
+header p strong {
+  font-family: 'Outfit', sans-serif;
+  color: var(--main-text-color);
 }

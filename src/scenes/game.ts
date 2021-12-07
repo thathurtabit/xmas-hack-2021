@@ -46,20 +46,24 @@ export default class Game extends Phaser.Scene {
     const collidingLayers: Array<TilemapLayer> = [edgesLayer];
     this.setCollision(collidingLayers);
 
-    createCovidParticles({
-      scene: this,
-      x: 275,
-      y: 275,
-      itemsToCollideWith: collidingLayers,
-      key: EAssetKeys.COVID_PARTICLE,
-      numberOfParticles: EParticlesCount.THREE,
-      onCollideCallback: this.onCovidParticleCollideCallback,
-    });
+    this.createCovidParticles();
 
     this.masks = this.add.group();
 
     this.addHumanoids(this);
     // this.spawnFaces(map);
+  }
+
+  private createCovidParticles(): void {
+    createCovidParticles({
+      scene: this,
+      x: 275,
+      y: 275,
+      itemsToCollideWith: [],
+      key: EAssetKeys.COVID_PARTICLE,
+      numberOfParticles: EParticlesCount.THREE,
+      onCollideCallback: this.onCovidParticleCollideCallback,
+    });
   }
 
   private onCovidParticleCollideCallback() {
