@@ -4,6 +4,7 @@ import { EAssetKeys, EParticlesCount, EScenes } from "../settings/enums";
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 export default class Game extends Phaser.Scene {
+
   constructor() {
     super(EScenes.GAME);
   }
@@ -13,6 +14,7 @@ export default class Game extends Phaser.Scene {
     this.load.image(EAssetKeys.BLACK, "assets/map/black-square.png");
     this.load.image(EAssetKeys.COVID_PARTICLE, "assets/covid-particle.png");
     this.load.tilemapTiledJSON(EAssetKeys.MAP, "assets/map/map-json.json");
+    this.load.aseprite('human-0001', 'assets/Human-0001.png', 'assets/Human-0001.json');
   }
 
   create() {
@@ -50,6 +52,8 @@ export default class Game extends Phaser.Scene {
       numberOfParticles: EParticlesCount.THREE,
       onCollideCallback: this.onCovidParticleCollideCallback,
     });
+
+    this.addHumanoids(this);
   }
 
   private onCovidParticleCollideCallback() {
@@ -60,5 +64,11 @@ export default class Game extends Phaser.Scene {
     collidingLayers.forEach((layer) => {
       layer.setCollisionByProperty({ collides: true });
     });
+  }
+
+  private addHumanoids(game: Game): void {
+    game.anims.createFromAseprite('human-0001');
+    const human1 = this.add.sprite(200, 200, 'human-0001').setScale(6);
+    human1.play({key: 'cough', repeat: -1})
   }
 }
