@@ -6,4 +6,12 @@ module.exports = {
   env: {
     node: true,
   },
+  rules: {
+    "max-len": [
+      "error",
+      {
+        code: 300,
+      },
+    ],
+  },
 };

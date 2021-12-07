@@ -4,3 +4,14 @@ export enum EScenes {
   GAME_OVER = "game_over",
   HIGH_SCORES = "high_scores",
 }
+
+export enum EAssetKeys {
+  MAP = "map",
+  MAP_BG = "map-background",
+  BACKGROUND = "background",
+  FACES = "faces",
+  WALLS = "walls",
+  COVID_PARTICLE = "covid_particle",
+  WHITE = "white",
+  BLACK = "black",
+}
