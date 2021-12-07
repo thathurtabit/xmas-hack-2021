@@ -15,3 +15,10 @@ export enum EAssetKeys {
   WHITE = "white",
   BLACK = "black",
 }
+
+export enum EParticlesCount {
+  THREE = 3,
+  FIVE = 5,
+  EIGHT = 8,
+  TEN = 10,
+}

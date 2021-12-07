@@ -1,27 +1,57 @@
-export default class CovidParticle extends Phaser.GameObjects.Image {
+import "phaser";
+import { ICovidParticle } from "./../settings/interfaces";
+import { covidParticle } from "./../settings/constants";
+
+export default class CovidParticle extends Phaser.GameObjects.Sprite {
   private delay: number;
+  body: Phaser.Physics.Arcade.Body;
+  key: string;
+  velocityX: number;
+  velocityY: number;
 
-  constructor(params) {
-    super(params.scene, params.x, params.y, params.texture, params.frame);
-    this.x = params.x;
-    this.y = params.y;
-    this.texture = params.texture;
-    this.scale = 1;
-    this.delay = params.delay;
+  constructor({ scene, x, y, key, index }: ICovidParticle) {
+    super(scene, x, y, key);
+    this.key = key;
 
-    this.scene.add.existing(this);
-    this.scene.physics.world.enable(this);
+    this.velocityX = this.getRandomVelocity();
+    this.velocityY = this.getRandomVelocity();
 
+    this.delay = index;
+
+    // Actions
+    this.init();
+    this.start();
     this.addTween();
   }
 
-  public addTween() {
+  private getRandomVelocity(): number {
+    const randomTrueOrFalse = () => (Math.random() < 0.5 ? false : true);
+    const positiveOrNegativeDirection = (velocity: number) =>
+      randomTrueOrFalse() ? velocity : 0 - velocity;
+    return positiveOrNegativeDirection(Math.floor(Math.random() * 200) + 50);
+  }
+
+  private init(): void {
+    this.scene.physics.world.enable(this);
+    this.body.setSize(covidParticle.width, covidParticle.height);
+    this.scene.add.existing(this);
+    this.start();
+  }
+
+  private start(): void {
+    this.body.setVelocity(this.velocityX, this.velocityY);
+    this.body.velocity.normalize().scale(covidParticle.speed);
+    this.body.setBounce(1, 1);
+    this.body.setCollideWorldBounds(true);
+  }
+
+  public addTween(): void {
     this.scene.tweens.add({
       targets: this,
       angle: 360,
       duration: 1000,
       ease: "Sine.inOut",
-      yoyo: true,
+      yoyo: false,
       repeat: -1,
       delay: this.delay * 200,
     });
