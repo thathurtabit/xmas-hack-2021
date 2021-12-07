@@ -12,6 +12,7 @@ export enum EAssetKeys {
   FACES = "faces",
   WALLS = "walls",
   COVID_PARTICLE = "covid_particle",
+  MASK = "mask",
   WHITE = "white",
   BLACK = "black",
 }
