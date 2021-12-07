@@ -1,6 +1,11 @@
 import { createCovidParticles } from "./../utils/createCovidParticle";
 import "phaser";
-import { EAssetKeys, EParticlesCount, EScenes } from "../settings/enums";
+import {
+  EAssetKeys,
+  EAudioKeys,
+  EParticlesCount,
+  EScenes,
+} from "../settings/enums";
 import Mask from "../gameObjects/mask";
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
@@ -18,7 +23,7 @@ export default class Game extends Phaser.Scene {
     this.load.image(EAssetKeys.COVID_PARTICLE, "assets/covid-particle.png");
     this.load.tilemapTiledJSON(EAssetKeys.MAP, "assets/map/map-json.json");
     this.load.aseprite(
-      "human-0001",
+      EAssetKeys.HUMAN_1,
       "assets/Human-0001.png",
       "assets/Human-0001.json"
     );
@@ -68,10 +73,10 @@ export default class Game extends Phaser.Scene {
   }
 
   private addHumanoids(game: Game): void {
-    game.anims.createFromAseprite("human-0001");
-    const human1 = this.add.sprite(200, 200, "human-0001").setScale(6);
+    game.anims.createFromAseprite(EAssetKeys.HUMAN_1);
+    const human1 = this.add.sprite(200, 200, EAssetKeys.HUMAN_1).setScale(6);
     this.addMaskOnClick(human1);
-    human1.play({ key: "cough", repeat: -1 });
+    human1.play({ key: EAudioKeys.COUGH, repeat: -1 });
   }
 
   private addMaskOnClick(human: Phaser.GameObjects.Sprite) {

@@ -15,6 +15,11 @@ export enum EAssetKeys {
   MASK = "mask",
   WHITE = "white",
   BLACK = "black",
+  HUMAN_1 = "human-0001",
+}
+
+export enum EAudioKeys {
+  COUGH = "cough",
 }
 
 export enum EParticlesCount {
