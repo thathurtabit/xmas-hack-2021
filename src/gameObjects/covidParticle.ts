@@ -1,6 +1,7 @@
 import "phaser";
 import { ICovidParticle } from "./../settings/interfaces";
 import { covidParticle } from "./../settings/constants";
+import { EAssetKeys } from "../settings/enums";
 
 export default class CovidParticle extends Phaser.GameObjects.Sprite {
   private delay: number;
@@ -9,7 +10,7 @@ export default class CovidParticle extends Phaser.GameObjects.Sprite {
   velocityX: number;
   velocityY: number;
 
-  constructor({ scene, x, y, key, index }: ICovidParticle) {
+  constructor({ scene, x, y, key, index, group }: ICovidParticle) {
     super(scene, x, y, key);
     this.key = key;
 
@@ -17,6 +18,8 @@ export default class CovidParticle extends Phaser.GameObjects.Sprite {
     this.velocityY = this.getRandomVelocity();
 
     this.delay = index;
+
+    group.add(this);
 
     // Actions
     this.init();
@@ -33,8 +36,9 @@ export default class CovidParticle extends Phaser.GameObjects.Sprite {
 
   private init(): void {
     this.scene.physics.world.enable(this);
-    this.body.setSize(covidParticle.width, covidParticle.height);
     this.scene.add.existing(this);
+    this.name = EAssetKeys.COVID_PARTICLE;
+    this.body.setSize(covidParticle.width, covidParticle.height);
     this.start();
   }
 

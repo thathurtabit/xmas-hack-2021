@@ -9,23 +9,29 @@ export const createCovidParticles = ({
   numberOfParticles,
   itemsToCollideWith,
   onCollideCallback,
+  group,
 }: ICreateCovidParticles) => {
   const createCollisions = (particle: CovidParticle) => {
-    scene.physics.add.collider(
-      particle,
-      itemsToCollideWith,
-      null,
-      onCollideCallback
-    );
+    itemsToCollideWith.getChildren().forEach((itemToCollideWith) => {
+      scene.physics.add.collider(
+        particle,
+        itemToCollideWith,
+        null,
+        () => onCollideCallback(particle, itemToCollideWith as any),
+        scene
+      );
+    }, scene);
   };
 
   const covidParticles = new Array(numberOfParticles)
     .fill(0)
     .map((_, index) => {
-      const particle = new CovidParticle({ scene, x, y, key, index });
+      const particle = new CovidParticle({ scene, x, y, key, index, group });
       createCollisions(particle);
+
       return particle;
     });
 
   scene.physics.add.collider(covidParticles, covidParticles);
 };
+

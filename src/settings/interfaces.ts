@@ -1,11 +1,12 @@
 import { EAssetKeys, EParticlesCount } from "./enums";
-import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
+
 export interface ICovidParticle {
   scene: Phaser.Scene;
   x: number;
   y: number;
   key: EAssetKeys;
   index: number;
+  group: Phaser.GameObjects.Group;
 }
 
 export interface ICreateCovidParticles {
@@ -14,6 +15,18 @@ export interface ICreateCovidParticles {
   y: number;
   key: EAssetKeys;
   numberOfParticles: EParticlesCount;
-  itemsToCollideWith: TilemapLayer[];
+  itemsToCollideWith: Phaser.GameObjects.Group;
   onCollideCallback?: ArcadePhysicsCallback;
+  group: Phaser.GameObjects.Group;
+}
+
+export interface ICreateCovidParticlesFromFace {
+  xSpewPosition: number;
+  ySpewPosition: number;
+}
+
+export interface ICreateHumanoid {
+  assetKey: EAssetKeys;
+  x: number;
+  y: number;
 }

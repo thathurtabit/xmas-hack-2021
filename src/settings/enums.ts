@@ -16,6 +16,11 @@ export enum EAssetKeys {
   WHITE = "white",
   BLACK = "black",
   HUMAN_1 = "human-0001",
+  HUMAN_2 = "human-0001",
+  HUMAN_3 = "human-0001",
+  HUMAN_4 = "human-0001",
+  HUMAN_5 = "human-0001",
+  HUMAN_6 = "human-0001",
 }
 
 export enum EAudioKeys {
@@ -23,6 +28,7 @@ export enum EAudioKeys {
 }
 
 export enum EParticlesCount {
+  ONE = 1,
   THREE = 3,
   FIVE = 5,
   EIGHT = 8,

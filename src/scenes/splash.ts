@@ -1,7 +1,7 @@
 import { EAssetKeys } from "./../settings/enums";
 import "phaser";
 import { EScenes } from "../settings/enums";
-import { fontFamily } from "../settings/constants";
+import { colors, fontFamily } from "../settings/constants";
 
 export default class Splash extends Phaser.Scene {
   constructor() {
@@ -13,7 +13,7 @@ export default class Splash extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor("#3a0ca3");
+    this.cameras.main.setBackgroundColor(colors.primary);
     const screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY =
@@ -49,7 +49,7 @@ export default class Splash extends Phaser.Scene {
         font: `40px ${fontFamily}`,
         padding: { x: 20, y: 10 },
         backgroundColor: "#fff",
-        color: "#3a0ca3",
+        color: colors.primary,
       })
       .setOrigin(0.5)
       .setAlign("center");
@@ -70,5 +70,9 @@ export default class Splash extends Phaser.Scene {
       },
       this
     );
+
+    this.input.on("gameobjectover", (_, gameObject) => {
+      gameObject.setTint(0x7878ff);
+    });
   }
 }

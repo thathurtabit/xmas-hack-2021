@@ -13,8 +13,8 @@ export const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
+      //debug: true,
     },
   },
-  debug: true,
   scene: [Splash, Game, GameOver, HighScores],
 };
