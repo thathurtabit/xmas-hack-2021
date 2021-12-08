@@ -3,7 +3,6 @@
   command = "npm run build"
 
 [build.environment]
-  TEST_COOL_ENV_VARIABLE = "whazzzzzup"
   FAUNA_GRAPHQL_URL = "https://graphql.us.fauna.com/graphql"
 
 [dev]

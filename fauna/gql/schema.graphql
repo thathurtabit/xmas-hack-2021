@@ -1,0 +1,16 @@
+type Player {
+    name: String! @unique
+    sessionId: String
+    scores: [Score!] @relation
+}
+
+type Score {
+    timeElapsedMs: Int!
+    player: Player!
+}
+
+type Query {
+    allPlayers: [Player!]
+    playerByName(name: String!): Player
+    highScores(first: Int): [Score!] @resolver(name: "high_scores")
+}

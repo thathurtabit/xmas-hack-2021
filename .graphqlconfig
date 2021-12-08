@@ -1,0 +1,17 @@
+{
+  "name": "Game Server GraphQL Schema",
+  "schemaPath": "fauna/gql/schema.graphql",
+  "includes": ["fauna/gql/**","netlify/functions/**"],
+  "extensions": {
+    "endpoints": {
+      "Fauna": {
+        "url": "https://graphql.us.fauna.com/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL",
+          "authorization": "Bearer fnAEZ3E4pTAAQtaO2v_unb8hNuDdXWS2TYu2yj-9"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

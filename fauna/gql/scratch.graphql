@@ -1,0 +1,15 @@
+mutation CreatePlayer {
+    createPlayer(data: { name: "leon" }) {
+        name
+    }
+}
+
+mutation SubmitScore($playerID: ID!, $score: Int!) {
+    createScore(data: { timeElapsedMs: $score, player: { connect: $playerID } }) {
+        _id
+        timeElapsedMs
+        player {
+            name
+        }
+    }
+}
