@@ -260,12 +260,12 @@ export default class Game extends Phaser.Scene {
       animationKey: EAudioKeys.COUGH_4
     });
     this.createHumanoid({
-      assetKey: EAssetKeys.HUMAN_3,
+      assetKey: EAssetKeys.HUMAN_6,
       x: 600,
       y: 400,
       isInfected: false,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_3
+      animationKey: EAudioKeys.COUGH_6
     });
   }
 
