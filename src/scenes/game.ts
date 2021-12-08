@@ -26,6 +26,7 @@ export default class Game extends Phaser.Scene {
   gameStatusUI: GameStatusUI;
 
   availableMasks = 4;
+  maxAvailableMasks = 4;
   timerIncrementMS = 100;
   survivalTime = 0;
 
@@ -79,8 +80,8 @@ export default class Game extends Phaser.Scene {
       delay: 3000,
       callback: () => this.newInfections(),
       callbackScope: this,
-      loop: true
-    })
+      loop: true,
+    });
 
     this.addGameUI();
   }
@@ -102,13 +103,13 @@ export default class Game extends Phaser.Scene {
 
   private newInfections() {
     this.faces.children.each((human: Human) => {
-      if(human.isInfected && !human.isMasked) {
+      if (human.isInfected && !human.isMasked) {
         this.createCovidParticlesFromFace({
           xSpewPosition: human.x,
           ySpewPosition: human.y,
-        })
+        });
       }
-    })
+    });
   }
 
   private createCovidParticlesFromFace({
@@ -124,7 +125,7 @@ export default class Game extends Phaser.Scene {
       numberOfParticles: EParticlesCount.ONE,
       onCollideCallback: this.onCovidParticleCollideCallback,
       group: this.particles,
-      destroyable: false
+      destroyable: false,
     });
   }
 
@@ -132,11 +133,10 @@ export default class Game extends Phaser.Scene {
     object1: Phaser.GameObjects.GameObject,
     object2: Phaser.GameObjects.GameObject
   ) {
-
-    if( object2 instanceof Human && !object2.isMasked) {
-      object2.infect()
+    if (object2 instanceof Human && !object2.isMasked) {
+      object2.infect();
       if (object1 instanceof CovidParticle && object1.destroyable) {
-        object1.destroy()
+        object1.destroy();
       }
     }
 
@@ -165,7 +165,7 @@ export default class Game extends Phaser.Scene {
       y: y,
       texture: assetKey,
       scale: 4,
-      isInfected: isInfected
+      isInfected: isInfected,
     });
 
     this.physics.world.enable(human);
@@ -180,36 +180,56 @@ export default class Game extends Phaser.Scene {
 
     this.faces.add(human);
 
-    // IF IS INFECTED, SPEW COVID PARTICLES...
-    // NOTE: this relies on the this.faces group, make sure to include this last
-    // this.createCovidParticlesFromFace({
-    //   xSpewPosition: human.x,
-    //   ySpewPosition: human.y,
-    // });
-
     return human;
   }
 
   private addHumanoids(game: Game): void {
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_1, x: 200, y: 200, isInfected: true });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_2, x: 400, y: 200, isInfected: false });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_3, x: 600, y: 200, isInfected: false });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_4, x: 200, y: 400, isInfected: false });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_5, x: 400, y: 400, isInfected: false });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_6, x: 600, y: 400, isInfected: false });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_1,
+      x: 200,
+      y: 200,
+      isInfected: true,
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_2,
+      x: 400,
+      y: 200,
+      isInfected: false,
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_3,
+      x: 600,
+      y: 200,
+      isInfected: false,
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_4,
+      x: 200,
+      y: 400,
+      isInfected: false,
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_5,
+      x: 400,
+      y: 400,
+      isInfected: false,
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_6,
+      x: 600,
+      y: 400,
+      isInfected: false,
+    });
   }
 
   private addMaskOnClick(human: Human) {
     human.setInteractive().on("pointerdown", () => {
       if (this.availableMasks > 0 && !human.isMasked) {
-        this.addMask(human);
         this.availableMasks--;
+        this.addMask(human);
         this.gameStatusUI.setAvailableMasks(this.availableMasks);
-      }
-      else if (this.availableMasks > 0 && human.isMasked) {
+      } else if (this.availableMasks > 0 && human.isMasked) {
         this.removeMask(human);
-        this.availableMasks++;
-        this.gameStatusUI.setAvailableMasks(this.availableMasks);
       }
     });
   }
@@ -225,29 +245,28 @@ export default class Game extends Phaser.Scene {
     this.masks.add(currentMask);
 
     human.giveMask(currentMask);
-    this.addDestroyMaskTimer(currentMask, human);
+    this.addDestroyMaskTimer(human);
   }
 
   private removeMask(human: Human) {
-    this.masks.remove(human.currentMask);
-    human.currentMask.destroy();
-    human.takeMask();
+    if (human.isMasked) {
+      human.currentMask.destroy();
+      human.takeMask();
+      
+      this.availableMasks++;
+      this.masks.remove(human.currentMask);
+      this.gameStatusUI.setAvailableMasks(this.availableMasks);
+
+    }
   }
 
-  private addDestroyMaskTimer(currentMask: Mask, human: Human) {
+  private addDestroyMaskTimer(human: Human) {
     this.time.addEvent({
       delay: 5000,
-      callback: () => this.destroyMask(currentMask, human),
+      callback: () => this.removeMask(human),
       callbackScope: this,
       loop: false,
     });
-  }
-
-  private destroyMask(mask: Mask, human: Human): void {
-    this.masks.remove(mask);
-    this.availableMasks++;
-    mask.destroy(true);
-    human.isMasked = false;
   }
 
   private addDisinfectTimer(human: Human) {
