@@ -7,11 +7,6 @@ export default class HighScores extends Phaser.Scene {
     super(EScenes.HIGH_SCORES);
   }
 
-  preload() {
-    // Preload assets here i.e...
-    // this.load.image("logo", "assets/phaser3-logo.png");
-  }
-
   create() {
     this.cameras.main.setBackgroundColor(colors.primary);
     this.cameras.main.fadeIn(transition.scene, 0, 0, 0);
@@ -28,22 +23,24 @@ export default class HighScores extends Phaser.Scene {
       .setOrigin(0.5)
       .setAlign("center");
 
-    this.add
-      .text(screenCenterX, 500, `SPLASH`, {
-        font: `40px ${fontFamily}`,
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#fff",
-        color: "#000",
-      })
-      .setOrigin(0.5)
-      .setAlign("center");
+    // TODO: we can't seem to reset the game without errors... we need to refresh browser :(
+    // this.add
+    //   .text(screenCenterX, 500, `SPLASH`, {
+    //     font: `40px ${fontFamily}`,
+    //     padding: { x: 20, y: 10 },
+    //     backgroundColor: "#fff",
+    //     color: "#000",
+    //   })
+    //   .setOrigin(0.5)
+    //   .setAlign("center");
 
-    this.input.on(
-      "pointerup",
-      () => {
-        this.scene.start(EScenes.SPLASH);
-      },
-      this
-    );
+    // this.input.on(
+    //   "pointerdown",
+    //   () => {
+    //     this.scene.restart();
+    //     this.scene.start(EScenes.SPLASH);
+    //   },
+    //   this
+    // );
   }
 }

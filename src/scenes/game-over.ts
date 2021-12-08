@@ -40,15 +40,35 @@ export default class GameOver extends Phaser.Scene {
       )
       .setOrigin(0.5)
       .setAlign("center");
+    
+      this.add
+        .text(screenCenterX, 500, `High Scores`, {
+          font: `30px ${fontFamily}`,
+          padding: { x: 20, y: 10 },
+          backgroundColor: colors.white,
+          color: colors.primary,
+        })
+        .setOrigin(0.5)
+        .setAlign("center")
+        .setInteractive()
+        .on("pointerdown", () => {
+          this.scene.start(EScenes.HIGH_SCORES);
+        });
+      
 
-    this.add
-      .text(screenCenterX, 500, `High Scores`, {
-        font: `40px ${fontFamily}`,
-        padding: { x: 20, y: 10 },
-        backgroundColor: "#fff",
-        color: "#000",
-      })
-      .setOrigin(0.5)
-      .setAlign("center");
+        // Todo, find a way to reset the game without annoying errors...
+      // this.add
+      //   .text(screenCenterX - 200, 500, `Play Again`, {
+      //     font: `30px ${fontFamily}`,
+      //     padding: { x: 20, y: 10 },
+      //     backgroundColor: colors.white,
+      //     color: colors.primary,
+      //   })
+      //   .setOrigin(0.5)
+      //   .setAlign("center")
+      //   .setInteractive()
+      //   .on("pointerdown", () => {
+      //     this.scene.start(EScenes.SPLASH);
+      //   });
   }
 }

@@ -50,7 +50,7 @@ export default class Splash extends Phaser.Scene {
       .text(screenCenterX, 500, `Play`, {
         font: `40px ${fontFamily}`,
         padding: { x: 20, y: 10 },
-        backgroundColor: "#fff",
+        backgroundColor: colors.white,
         color: colors.primary,
       })
       .setOrigin(0.5)
@@ -66,7 +66,7 @@ export default class Splash extends Phaser.Scene {
     });
 
     this.input.on(
-      "pointerup",
+      "pointerdown",
       () => {
         this.scene.start(EScenes.GAME);
       },

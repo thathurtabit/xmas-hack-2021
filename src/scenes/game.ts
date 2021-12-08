@@ -170,9 +170,13 @@ export default class Game extends Phaser.Scene {
   private handleGameOver(): void {
     this.survivalTimerEvent.paused = true;
 
-    this.scene.transition({ target: EScenes.GAME_OVER, duration: 2000, data: {
-      survivalTime: this.survivalTime / 1000,
-    } });
+    this.scene.transition({
+      target: EScenes.GAME_OVER,
+      duration: 2000,
+      data: {
+        survivalTime: this.survivalTime / 1000,
+      },
+    });
   }
 
   private setCollision(collidingLayers: Array<TilemapLayer>) {
