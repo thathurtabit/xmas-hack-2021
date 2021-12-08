@@ -20,7 +20,7 @@ export default class Game extends Phaser.Scene {
   faces: Phaser.GameObjects.Group;
   particles: Phaser.GameObjects.Group;
 
-  availableMasks = 5;
+  availableMasks = 4;
 
   constructor() {
     super(EScenes.GAME);
@@ -147,24 +147,41 @@ export default class Game extends Phaser.Scene {
       if (this.availableMasks > 0 && !human.isMasked) {
         this.addMask(human);
         this.availableMasks--;
-        console.log(this.availableMasks);
-        console.log(human);
-      } else {
-        console.log("already masked");
-      }
+      } 
     });
   }
 
   private addMask(human: Human) {
+    const currentMask = new Mask({
+      scene: this,
+      x: human.x - 5,
+      y: human.y + 6,
+      texture: EAssetKeys.MASK,
+    });
+
     this.masks.add(
-      new Mask({
-        scene: this,
-        x: human.x - 5,
-        y: human.y + 6,
-        texture: EAssetKeys.MASK,
-      })
+      currentMask
     );
+    
     human.addMask();
-    console.log("added mask");
+    this.addTimer(currentMask, human);
+  }
+
+  private addTimer(currentMask: Mask, human: Human) {
+    this.time.addEvent({
+      delay: 5000,
+      callback: () => this.destroyMask(currentMask, human),
+      callbackScope: this,
+      loop: false
+    });
+  }
+
+  private destroyMask(mask: Mask, human: Human): void {
+    this.masks.remove(mask)
+    this.availableMasks++
+    mask.destroy(true);
+    human.isMasked = false;
   }
 }
+
+
