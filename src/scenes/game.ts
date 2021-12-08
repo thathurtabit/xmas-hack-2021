@@ -220,12 +220,12 @@ export default class Game extends Phaser.Scene {
 
   private addHumanoids(): void {
     this.createHumanoid({
-      assetKey: EAssetKeys.HUMAN_4,
+      assetKey: EAssetKeys.HUMAN_5,
       x: 200,
       y: 200,
       isInfected: true,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_4
+      animationKey: EAudioKeys.COUGH_5
     });
     this.createHumanoid({
       assetKey: EAssetKeys.HUMAN_2,
