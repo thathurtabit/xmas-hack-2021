@@ -186,12 +186,54 @@ export default class Game extends Phaser.Scene {
   }
 
   private addHumanoids(): void {
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_1, x: 200, y: 200, isInfected: true, scale: 4, animationKey: EAudioKeys.COUGH_1 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_2, x: 400, y: 200, isInfected: false, scale: 2, animationKey: EAudioKeys.COUGH_2 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_1, x: 600, y: 200, isInfected: false, scale: 4, animationKey: EAudioKeys.COUGH_1 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_2, x: 200, y: 400, isInfected: false, scale: 2, animationKey: EAudioKeys.COUGH_2 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_1, x: 400, y: 400, isInfected: false, scale: 4, animationKey: EAudioKeys.COUGH_1 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_2, x: 600, y: 400, isInfected: false, scale: 2, animationKey: EAudioKeys.COUGH_2 });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_1,
+      x: 200,
+      y: 200,
+      isInfected: true,
+      scale: 4,
+      animationKey: EAudioKeys.COUGH_1
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_2,
+      x: 400,
+      y: 200,
+      isInfected: false,
+      scale: 2,
+      animationKey: EAudioKeys.COUGH_2
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_1,
+      x: 600,
+      y: 200,
+      isInfected: false,
+      scale: 4,
+      animationKey: EAudioKeys.COUGH_1
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_2,
+      x: 200,
+      y: 400,
+      isInfected: false,
+      scale: 2,
+      animationKey: EAudioKeys.COUGH_2
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_1,
+      x: 400,
+      y: 400,
+      isInfected: false,
+      scale: 4,
+      animationKey: EAudioKeys.COUGH_1
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_2,
+      x: 600,
+      y: 400,
+      isInfected: false,
+      scale: 2,
+      animationKey: EAudioKeys.COUGH_2
+    });
   }
 
   private addMaskOnClick(human: Human) {
