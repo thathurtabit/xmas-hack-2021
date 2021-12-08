@@ -13,6 +13,7 @@ import {
   ICreateCovidParticlesFromFace,
   ICreateHumanoid,
 } from "../settings/interfaces";
+import Human from "../gameObjects/human";
 
 export default class Game extends Phaser.Scene {
   masks: Phaser.GameObjects.Group;
@@ -102,7 +103,14 @@ export default class Game extends Phaser.Scene {
     y,
   }: ICreateHumanoid): Phaser.GameObjects.Sprite {
     this.anims.createFromAseprite(assetKey);
-    const human = this.add.sprite(x, y, assetKey).setScale(4);
+    const human = new Human({
+      scene: this,
+      x: x,
+      y: y,
+      texture: assetKey,
+      scale: 4,
+    });
+    //this.add.sprite(x, y, assetKey).setScale(4);
 
     this.physics.world.enable(human);
     this.add.existing(human);
@@ -134,17 +142,20 @@ export default class Game extends Phaser.Scene {
     this.createHumanoid({ assetKey: EAssetKeys.HUMAN_6, x: 600, y: 400 });
   }
 
-  private addMaskOnClick(human: Phaser.GameObjects.Sprite) {
+  private addMaskOnClick(human: Human) {
     human.setInteractive().on("pointerdown", () => {
-      if (this.availableMasks > 0) {
+      if (this.availableMasks > 0 && !human.isMasked) {
         this.addMask(human);
         this.availableMasks--;
         console.log(this.availableMasks);
+        console.log(human);
+      } else {
+        console.log("already masked");
       }
     });
   }
 
-  private addMask(human: Phaser.GameObjects.Sprite) {
+  private addMask(human: Human) {
     this.masks.add(
       new Mask({
         scene: this,
@@ -153,6 +164,7 @@ export default class Game extends Phaser.Scene {
         texture: EAssetKeys.MASK,
       })
     );
+    human.addMask();
     console.log("added mask");
   }
 }
