@@ -23,6 +23,10 @@ export enum EAssetKeys {
   HUMAN_6 = "human-0001",
 }
 
+export enum EObjectKeys {
+  GAME_STATUS_UI = "game-status-ui",
+}
+
 export enum EAudioKeys {
   COUGH = "cough",
 }

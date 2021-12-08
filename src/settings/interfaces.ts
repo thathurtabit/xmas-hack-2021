@@ -30,3 +30,9 @@ export interface ICreateHumanoid {
   x: number;
   y: number;
 }
+
+export interface IGameStatusUI {
+  gameScene: Phaser.Scene;
+  availableMasks: number;
+  survivalTime: number;
+}

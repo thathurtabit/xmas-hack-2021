@@ -7,6 +7,7 @@ import {
   EScenes,
 } from "../settings/enums";
 import Mask from "../gameObjects/mask";
+import GameStatusUI from "../gameObjects/gameStatusUI";
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 import { colors } from "../settings/constants";
 import {
@@ -19,8 +20,12 @@ export default class Game extends Phaser.Scene {
   masks: Phaser.GameObjects.Group;
   faces: Phaser.GameObjects.Group;
   particles: Phaser.GameObjects.Group;
+  timerEvent: Phaser.Time.TimerEvent;
+  gameStatusUI: GameStatusUI;
 
   availableMasks = 4;
+  timerIncrementMS = 100;
+  survivalTime = 0;
 
   constructor() {
     super(EScenes.GAME);
@@ -42,6 +47,14 @@ export default class Game extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor(colors.primary);
 
+    // Each 100ms call onEvent
+    this.timerEvent = this.time.addEvent({
+      delay: this.timerIncrementMS,
+      callback: this.incrementGameTimer,
+      callbackScope: this,
+      loop: true,
+    });
+
     const map = this.make.tilemap({ key: EAssetKeys.MAP });
     const whiteTileset = map.addTilesetImage(
       EAssetKeys.MAP_BG,
@@ -57,12 +70,30 @@ export default class Game extends Phaser.Scene {
     const collidingLayers: Array<TilemapLayer> = [edgesLayer];
     this.setCollision(collidingLayers);
 
+    // Game Object Groups
     this.masks = this.add.group();
-    this.faces = this.add.group(); //this.physics.add.staticGroup();
+    this.faces = this.add.group();
     this.particles = this.add.group();
 
     this.addHumanoids(this);
     // this.spawnFaces(map);
+
+    this.addGameUI();
+  }
+
+  private addGameUI(): void {
+    this.gameStatusUI = new GameStatusUI({
+      gameScene: this,
+      availableMasks: this.availableMasks,
+      survivalTime: this.survivalTime,
+    });
+
+    this.add.existing(this.gameStatusUI);
+  }
+
+  private incrementGameTimer(): void {
+    this.survivalTime += this.timerIncrementMS;
+    this.gameStatusUI.setSurvivalTime(this.survivalTime / 1000);
   }
 
   private createCovidParticlesFromFace({
@@ -124,6 +155,7 @@ export default class Game extends Phaser.Scene {
 
     this.faces.add(human);
 
+    // IF IS INFECTED, SPEW COVID PARTICLES...
     // NOTE: this relies on the this.faces group, make sure to include this last
     this.createCovidParticlesFromFace({
       xSpewPosition: human.x,
@@ -147,7 +179,8 @@ export default class Game extends Phaser.Scene {
       if (this.availableMasks > 0 && !human.isMasked) {
         this.addMask(human);
         this.availableMasks--;
-      } 
+        this.gameStatusUI.setAvailableMasks(this.availableMasks);
+      }
     });
   }
 
@@ -179,7 +212,7 @@ export default class Game extends Phaser.Scene {
   private destroyMask(mask: Mask, human: Human): void {
     this.masks.remove(mask)
     this.availableMasks++
-    mask.destroy(true);
+    mask.destroy();
     human.isMasked = false;
   }
 }

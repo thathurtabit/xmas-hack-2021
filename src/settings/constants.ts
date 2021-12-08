@@ -1,5 +1,6 @@
 export const colors = {
   primary: "#3a0ca3",
+  white: "#fff",
 };
 export const fontFamily = '"Outfit", sans-serif';
 export const covidParticle = {
