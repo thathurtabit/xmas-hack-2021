@@ -12,5 +12,6 @@ type Score {
 type Query {
     allPlayers: [Player!]
     playerByName(name: String!): Player
-    highScores: [Score!] @resolver(name: "high_scores", paginated: true)
+    highScores: [Score!] @resolver(name: "high_scores", p
+    aginated: true)
 }

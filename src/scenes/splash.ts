@@ -68,7 +68,7 @@ export default class Splash extends Phaser.Scene {
     this.input.on(
       "pointerdown",
       () => {
-        this.scene.start(EScenes.GAME);
+        this.scene.start(EScenes.GAME_OVER, { survivalTime: 1001 });
       },
       this
     );

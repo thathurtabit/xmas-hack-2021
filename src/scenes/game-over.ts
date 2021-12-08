@@ -2,6 +2,10 @@ import "phaser";
 import { EScenes } from "../settings/enums";
 import { colors, fontFamily, transition } from "../settings/constants";
 
+interface IGameStats {
+    survivalTime: number
+}
+
 export default class GameOver extends Phaser.Scene {
   survivalTime: number;
 
@@ -9,14 +13,13 @@ export default class GameOver extends Phaser.Scene {
     super(EScenes.GAME_OVER);
   }
 
-  init({ survivalTime }): void {
+  init({ survivalTime }: IGameStats): void {
     this.survivalTime = survivalTime;
   }
 
-  create(): void {
+  create(data: IGameStats) {
     this.cameras.main.setBackgroundColor(colors.primary);
     this.cameras.main.fadeIn(transition.scene, 0, 0, 0);
-
     const screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY =

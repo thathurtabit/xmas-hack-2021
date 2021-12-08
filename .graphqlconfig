@@ -8,7 +8,7 @@
         "url": "https://graphql.us.fauna.com/graphql",
         "headers": {
           "user-agent": "JS GraphQL",
-          "authorization": "Bearer fnAEZ3E4pTAAQtaO2v_unb8hNuDdXWS2TYu2yj-9"
+          "authorization": "Bearer fnAEZ2iW2FAAQxTNHwkk56TTrbUv6VBs7VPS9AQm"
         },
         "introspect": false
       }
