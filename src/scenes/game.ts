@@ -132,7 +132,7 @@ export default class Game extends Phaser.Scene {
       y: ySpewPosition,
       itemsToCollideWith: this.faces,
       key: EAssetKeys.COVID_PARTICLE,
-      numberOfParticles: EParticlesCount.ONE,
+      numberOfParticles: EParticlesCount.TWO,
       onCollideCallback: this.onCovidParticleCollideCallback.bind(this),
       group: this.particles,
       destroyable: false,
@@ -312,13 +312,30 @@ export default class Game extends Phaser.Scene {
       mask.destroyMaskTimer.remove();
     }
 
+    const delayBeforeMaskDestroy = 5000
+
     const maskTimer = this.time.addEvent({
-      delay: 5000,
+      delay: delayBeforeMaskDestroy,
       callback: () => this.removeMask(human),
       callbackScope: this,
       loop: false,
     });
+    this.time.addEvent({
+      delay: delayBeforeMaskDestroy - 1500,
+      callback: () => this.tweenMaskIsTimingOut(mask),
+      callbackScope: this,
+      loop: false,
+    });
     mask.setDestroyMaskTimer(maskTimer);
+  }
+
+  private tweenMaskIsTimingOut = (mask: Mask) => {
+    this.tweens.add({
+      targets: mask,
+      alpha: 0.5,
+      duration: 500,
+      repeat: -1,
+    });
   }
   
   private addDisinfectTimer(human: Human) {

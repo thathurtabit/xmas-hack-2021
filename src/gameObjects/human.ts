@@ -1,10 +1,11 @@
+import { colors } from "../settings/constants";
 import Mask from "./mask";
 
 export default class Human extends Phaser.GameObjects.Sprite {
   isMasked: boolean;
   isInfected: boolean;
-  currentMask: Mask
-  disinfectTimer: Phaser.Time.TimerEvent
+  currentMask: Mask;
+  disinfectTimer: Phaser.Time.TimerEvent;
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture, params.frame);
@@ -20,38 +21,50 @@ export default class Human extends Phaser.GameObjects.Sprite {
     this.isInfected = params.isInfected;
 
     if (this.isInfected) {
-        this.tint = 0xD2FDCF;
+      this.tint = colors.infectedTint;
     }
   }
 
   giveMask(mask: Mask) {
-      this.isMasked = true;
-      this.currentMask = mask
-  } 
+    this.isMasked = true;
+    this.currentMask = mask;
+  }
 
   takeMask() {
-      this.isMasked = false;
-  } 
+    this.isMasked = false;
+  }
 
   infect() {
-      this.isInfected = true;
-      this.tint = 0xD2FDCF;
-    }
-    
-    disinfect() {
-        this.isInfected = false;
-        this.tint = 0xffffff;
+    this.isInfected = true;
+    this.infectedTween();
+    this.tint = colors.infectedTint;
+  }
+
+  disinfect() {
+    this.isInfected = false;
+    this.tint = colors.disinfectedTint;
   }
 
   setDisinfectTimer(scene: Phaser.Scene) {
-    if(this.disinfectTimer) {
-        this.disinfectTimer.remove();
-        }
+    if (this.disinfectTimer) {
+      this.disinfectTimer.remove();
+    }
     this.disinfectTimer = scene.time.addEvent({
-        delay: 10000,
-        callback: () => this.disinfect(),
-        callbackScope: scene,
-        loop: false,
-      });
+      delay: 10000,
+      callback: () => this.disinfect(),
+      callbackScope: scene,
+      loop: false,
+    });
+  }
+
+  infectedTween(): void {
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0.5,
+      duration: 300,
+      ease: "Sine.inOut",
+      loop: 3,
+      yoyo: true,
+    });
   }
 }
