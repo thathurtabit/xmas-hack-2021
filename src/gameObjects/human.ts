@@ -18,6 +18,10 @@ export default class Human extends Phaser.GameObjects.Sprite {
 
     this.isMasked = false;
     this.isInfected = params.isInfected;
+
+    if (this.isInfected) {
+        this.tint = 0xD2FDCF;
+    }
   }
 
   giveMask(mask: Mask) {
