@@ -9,8 +9,9 @@ export default class CovidParticle extends Phaser.GameObjects.Sprite {
   key: string;
   velocityX: number;
   velocityY: number;
+  destroyable: boolean;
 
-  constructor({ scene, x, y, key, index, group }: ICovidParticle) {
+  constructor({ scene, x, y, key, index, group, destroyable }: ICovidParticle) {
     super(scene, x, y, key);
     this.key = key;
 
@@ -18,6 +19,7 @@ export default class CovidParticle extends Phaser.GameObjects.Sprite {
     this.velocityY = this.getRandomVelocity();
 
     this.delay = index;
+    this.destroyable = destroyable
 
     group.add(this);
 
@@ -59,5 +61,9 @@ export default class CovidParticle extends Phaser.GameObjects.Sprite {
       repeat: -1,
       delay: this.delay * 200,
     });
+  }
+
+  public makeDestroyable() {
+    this.destroyable = true
   }
 }

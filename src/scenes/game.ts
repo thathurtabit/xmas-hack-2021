@@ -15,6 +15,8 @@ import {
   ICreateHumanoid,
 } from "../settings/interfaces";
 import Human from "../gameObjects/human";
+import { loadHumans } from "../utils/loadHumans";
+import CovidParticle from "../gameObjects/covidParticle";
 
 export default class Game extends Phaser.Scene {
   masks: Phaser.GameObjects.Group;
@@ -36,11 +38,7 @@ export default class Game extends Phaser.Scene {
     this.load.image(EAssetKeys.BLACK, "assets/map/black-square.png");
     this.load.image(EAssetKeys.COVID_PARTICLE, "assets/covid-particle.png");
     this.load.tilemapTiledJSON(EAssetKeys.MAP, "assets/map/map-json.json");
-    this.load.aseprite(
-      EAssetKeys.HUMAN_1,
-      "assets/Human-0001.png",
-      "assets/Human-0001.json"
-    );
+    loadHumans(this);
     this.load.image(EAssetKeys.MASK, "assets/mask.png");
   }
 
@@ -76,7 +74,13 @@ export default class Game extends Phaser.Scene {
     this.particles = this.add.group();
 
     this.addHumanoids(this);
-    // this.spawnFaces(map);
+
+    this.time.addEvent({
+      delay: 3000,
+      callback: () => this.newInfections(),
+      callbackScope: this,
+      loop: true
+    })
 
     this.addGameUI();
   }
@@ -96,6 +100,17 @@ export default class Game extends Phaser.Scene {
     this.gameStatusUI.setSurvivalTime(this.survivalTime / 1000);
   }
 
+  private newInfections() {
+    this.faces.children.each((human: Human) => {
+      if(human.isInfected && !human.isMasked) {
+        this.createCovidParticlesFromFace({
+          xSpewPosition: human.x,
+          ySpewPosition: human.y,
+        })
+      }
+    })
+  }
+
   private createCovidParticlesFromFace({
     xSpewPosition,
     ySpewPosition,
@@ -109,6 +124,7 @@ export default class Game extends Phaser.Scene {
       numberOfParticles: EParticlesCount.ONE,
       onCollideCallback: this.onCovidParticleCollideCallback,
       group: this.particles,
+      destroyable: false
     });
   }
 
@@ -116,6 +132,14 @@ export default class Game extends Phaser.Scene {
     object1: Phaser.GameObjects.GameObject,
     object2: Phaser.GameObjects.GameObject
   ) {
+
+    if( object2 instanceof Human && !object2.isMasked) {
+      object2.infect()
+      if (object1 instanceof CovidParticle && object1.destroyable) {
+        object1.destroy()
+      }
+    }
+
     console.log("COVID PARTICLE COLLISION", {
       object1: object1.name,
       object2: object2.name,
@@ -132,6 +156,7 @@ export default class Game extends Phaser.Scene {
     assetKey,
     x,
     y,
+    isInfected,
   }: ICreateHumanoid): Phaser.GameObjects.Sprite {
     this.anims.createFromAseprite(assetKey);
     const human = new Human({
@@ -140,8 +165,8 @@ export default class Game extends Phaser.Scene {
       y: y,
       texture: assetKey,
       scale: 4,
+      isInfected: isInfected
     });
-    //this.add.sprite(x, y, assetKey).setScale(4);
 
     this.physics.world.enable(human);
     this.add.existing(human);
@@ -157,21 +182,21 @@ export default class Game extends Phaser.Scene {
 
     // IF IS INFECTED, SPEW COVID PARTICLES...
     // NOTE: this relies on the this.faces group, make sure to include this last
-    this.createCovidParticlesFromFace({
-      xSpewPosition: human.x,
-      ySpewPosition: human.y,
-    });
+    // this.createCovidParticlesFromFace({
+    //   xSpewPosition: human.x,
+    //   ySpewPosition: human.y,
+    // });
 
     return human;
   }
 
   private addHumanoids(game: Game): void {
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_1, x: 200, y: 200 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_2, x: 400, y: 200 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_3, x: 600, y: 200 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_4, x: 200, y: 400 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_5, x: 400, y: 400 });
-    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_6, x: 600, y: 400 });
+    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_1, x: 200, y: 200, isInfected: true });
+    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_2, x: 400, y: 200, isInfected: false });
+    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_3, x: 600, y: 200, isInfected: false });
+    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_4, x: 200, y: 400, isInfected: false });
+    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_5, x: 400, y: 400, isInfected: false });
+    this.createHumanoid({ assetKey: EAssetKeys.HUMAN_6, x: 600, y: 400, isInfected: false });
   }
 
   private addMaskOnClick(human: Human) {
@@ -179,6 +204,11 @@ export default class Game extends Phaser.Scene {
       if (this.availableMasks > 0 && !human.isMasked) {
         this.addMask(human);
         this.availableMasks--;
+        this.gameStatusUI.setAvailableMasks(this.availableMasks);
+      }
+      else if (this.availableMasks > 0 && human.isMasked) {
+        this.removeMask(human);
+        this.availableMasks++;
         this.gameStatusUI.setAvailableMasks(this.availableMasks);
       }
     });
@@ -192,29 +222,40 @@ export default class Game extends Phaser.Scene {
       texture: EAssetKeys.MASK,
     });
 
-    this.masks.add(
-      currentMask
-    );
-    
-    human.addMask();
-    this.addTimer(currentMask, human);
+    this.masks.add(currentMask);
+
+    human.giveMask(currentMask);
+    this.addDestroyMaskTimer(currentMask, human);
   }
 
-  private addTimer(currentMask: Mask, human: Human) {
+  private removeMask(human: Human) {
+    this.masks.remove(human.currentMask);
+    human.currentMask.destroy();
+    human.takeMask();
+  }
+
+  private addDestroyMaskTimer(currentMask: Mask, human: Human) {
     this.time.addEvent({
       delay: 5000,
       callback: () => this.destroyMask(currentMask, human),
       callbackScope: this,
-      loop: false
+      loop: false,
     });
   }
 
   private destroyMask(mask: Mask, human: Human): void {
-    this.masks.remove(mask)
-    this.availableMasks++
-    mask.destroy();
+    this.masks.remove(mask);
+    this.availableMasks++;
+    mask.destroy(true);
     human.isMasked = false;
   }
+
+  private addDisinfectTimer(human: Human) {
+    this.time.addEvent({
+      delay: 10000,
+      callback: () => human.disinfect(),
+      callbackScope: this,
+      loop: false,
+    });
+  }
 }
-
-

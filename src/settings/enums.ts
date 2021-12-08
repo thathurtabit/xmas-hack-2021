@@ -16,11 +16,11 @@ export enum EAssetKeys {
   WHITE = "white",
   BLACK = "black",
   HUMAN_1 = "human-0001",
-  HUMAN_2 = "human-0001",
-  HUMAN_3 = "human-0001",
-  HUMAN_4 = "human-0001",
-  HUMAN_5 = "human-0001",
-  HUMAN_6 = "human-0001",
+  HUMAN_2 = "human-0002",
+  HUMAN_3 = "human-0003",
+  HUMAN_4 = "human-0004",
+  HUMAN_5 = "human-0005",
+  HUMAN_6 = "human-0006",
 }
 
 export enum EObjectKeys {

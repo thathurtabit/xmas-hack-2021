@@ -7,6 +7,7 @@ export interface ICovidParticle {
   key: EAssetKeys;
   index: number;
   group: Phaser.GameObjects.Group;
+  destroyable: boolean;
 }
 
 export interface ICreateCovidParticles {
@@ -18,6 +19,7 @@ export interface ICreateCovidParticles {
   itemsToCollideWith: Phaser.GameObjects.Group;
   onCollideCallback?: ArcadePhysicsCallback;
   group: Phaser.GameObjects.Group;
+  destroyable: boolean
 }
 
 export interface ICreateCovidParticlesFromFace {
@@ -29,6 +31,7 @@ export interface ICreateHumanoid {
   assetKey: EAssetKeys;
   x: number;
   y: number;
+  isInfected: boolean;
 }
 
 export interface IGameStatusUI {

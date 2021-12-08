@@ -1,6 +1,9 @@
+import Mask from "./mask";
+
 export default class Human extends Phaser.GameObjects.Sprite {
   isMasked: boolean;
   isInfected: boolean;
+  currentMask: Mask
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture, params.frame);
@@ -13,14 +16,23 @@ export default class Human extends Phaser.GameObjects.Sprite {
     this.scene.physics.world.enable(this);
 
     this.isMasked = false;
-    this.isInfected = false;
+    this.isInfected = params.isInfected;
   }
 
-  addMask() {
+  giveMask(mask: Mask) {
       this.isMasked = true;
+      this.currentMask = mask
+  } 
+
+  takeMask() {
+      this.isMasked = false;
   } 
 
   infect() {
       this.isInfected = true;
+  }
+
+  disinfect() {
+    this.isInfected = false;
   }
 }

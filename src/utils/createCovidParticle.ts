@@ -10,6 +10,7 @@ export const createCovidParticles = ({
   itemsToCollideWith,
   onCollideCallback,
   group,
+  destroyable
 }: ICreateCovidParticles) => {
   const createCollisions = (particle: CovidParticle) => {
     itemsToCollideWith.getChildren().forEach((itemToCollideWith) => {
@@ -26,9 +27,14 @@ export const createCovidParticles = ({
   const covidParticles = new Array(numberOfParticles)
     .fill(0)
     .map((_, index) => {
-      const particle = new CovidParticle({ scene, x, y, key, index, group });
+      const particle = new CovidParticle({ scene, x, y, key, index, group, destroyable });
       createCollisions(particle);
-
+      scene.time.addEvent({
+        delay: 1000,
+        callback: () => particle.makeDestroyable(),
+        callbackScope: scene,
+        loop: false
+      })
       return particle;
     });
 
