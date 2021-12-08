@@ -16,4 +16,9 @@ export const loadHumans = (scene: Phaser.Scene) => {
         "assets/human-0003.png",
         "assets/human-0003.json"
     );
+    scene.load.aseprite(
+        EAssetKeys.HUMAN_4,
+        "assets/human-0004.png",
+        "assets/human-0004.json"
+    );
 }
