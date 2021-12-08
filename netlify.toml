@@ -10,7 +10,3 @@
   command = "npm run start"
   targetPort = 8888
   port = 8889 # Set Netlify port to differ from Rollup serve
-
-[context.production.environment]
-  TEST_COOL_ENV_VARIABLE = "whazzzzzup"
-  FAUNA_GRAPHQL_URL = "https://graphql.us.fauna.com/graphql"
