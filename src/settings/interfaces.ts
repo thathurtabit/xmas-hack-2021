@@ -40,4 +40,6 @@ export interface IGameStatusUI {
   gameScene: Phaser.Scene;
   availableMasks: number;
   survivalTime: number;
+  numberOfInfected: number;
+  maxNumberOfInfected: number;
 }

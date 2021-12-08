@@ -9,7 +9,7 @@ import {
 import Mask from "../gameObjects/mask";
 import GameStatusUI from "../gameObjects/gameStatusUI";
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
-import { colors } from "../settings/constants";
+import { colors, transition } from "../settings/constants";
 import {
   ICreateCovidParticlesFromFace,
   ICreateHumanoid,
@@ -22,16 +22,21 @@ export default class Game extends Phaser.Scene {
   masks: Phaser.GameObjects.Group;
   faces: Phaser.GameObjects.Group;
   particles: Phaser.GameObjects.Group;
-  timerEvent: Phaser.Time.TimerEvent;
+  survivalTimerEvent: Phaser.Time.TimerEvent;
   gameStatusUI: GameStatusUI;
+  gameScene: Phaser.Scene;
 
   availableMasks = 4;
   maxAvailableMasks = 4;
   timerIncrementMS = 100;
   survivalTime = 0;
+  numberOfInfected: number;
+  maxNumberOfInfected: number;
 
   constructor() {
     super(EScenes.GAME);
+    this.numberOfInfected = 1;
+    this.maxNumberOfInfected = 6;
   }
 
   preload() {
@@ -44,10 +49,11 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor(colors.primary);
+    this.cameras.main.setBackgroundColor(colors.white);
+    this.cameras.main.fadeIn(transition.scene, 255, 255, 255);
 
     // Each 100ms call onEvent
-    this.timerEvent = this.time.addEvent({
+    this.survivalTimerEvent = this.time.addEvent({
       delay: this.timerIncrementMS,
       callback: this.incrementGameTimer,
       callbackScope: this,
@@ -91,6 +97,8 @@ export default class Game extends Phaser.Scene {
       gameScene: this,
       availableMasks: this.availableMasks,
       survivalTime: this.survivalTime,
+      numberOfInfected: this.numberOfInfected,
+      maxNumberOfInfected: this.maxNumberOfInfected,
     });
 
     this.add.existing(this.gameStatusUI);
@@ -123,27 +131,46 @@ export default class Game extends Phaser.Scene {
       itemsToCollideWith: this.faces,
       key: EAssetKeys.COVID_PARTICLE,
       numberOfParticles: EParticlesCount.ONE,
-      onCollideCallback: this.onCovidParticleCollideCallback,
+      onCollideCallback: this.onCovidParticleCollideCallback.bind(this),
       group: this.particles,
       destroyable: false,
     });
   }
 
   private onCovidParticleCollideCallback(
-    object1: Phaser.GameObjects.GameObject,
-    object2: Phaser.GameObjects.GameObject
+    covidParticle: Phaser.GameObjects.GameObject,
+    human: Phaser.GameObjects.GameObject
   ) {
-    if (object2 instanceof Human && !object2.isMasked) {
-      object2.infect();
-      if (object1 instanceof CovidParticle && object1.destroyable) {
-        object1.destroy();
-      }
+    const isHumanAbleToBeInfected = human instanceof Human && !human.isMasked
+
+    if (isHumanAbleToBeInfected && !human.isInfected) {
+      human.infect();
+      this.incrementInfectedCount();
     }
 
-    // console.log("COVID PARTICLE COLLISION", {
-    //   object1: object1.name,
-    //   object2: object2.name,
-    // });
+    if (covidParticle instanceof CovidParticle && covidParticle.destroyable && isHumanAbleToBeInfected) {
+      covidParticle.destroy();
+    }
+  }
+
+  private incrementInfectedCount(): void {
+    this.numberOfInfected++;
+    this.gameStatusUI.setNumberOfInfected(this.numberOfInfected);
+    this.checkForGameOver();
+  }
+
+  private checkForGameOver(): void {
+    if (this.numberOfInfected >= this.maxNumberOfInfected) {
+      this.handleGameOver();
+    }
+  }
+
+  private handleGameOver(): void {
+    this.survivalTimerEvent.paused = true;
+
+    this.scene.transition({ target: EScenes.GAME_OVER, duration: 2000, data: {
+      survivalTime: this.survivalTime / 1000,
+    } });
   }
 
   private setCollision(collidingLayers: Array<TilemapLayer>) {
@@ -281,6 +308,13 @@ export default class Game extends Phaser.Scene {
       callbackScope: this,
       loop: false,
     });
+  }
+
+  private destroyMask(mask: Mask, human: Human): void {
+    this.masks.remove(mask);
+    this.availableMasks++;
+    mask.destroy();
+    human.isMasked = false;
   }
 
   private addDisinfectTimer(human: Human) {

@@ -1,6 +1,6 @@
 import "phaser";
 import { EScenes } from "../settings/enums";
-import { fontFamily } from "../settings/constants";
+import { colors, fontFamily, transition } from "../settings/constants";
 
 export default class GameOver extends Phaser.Scene {
   survivalTime: number;
@@ -14,14 +14,16 @@ export default class GameOver extends Phaser.Scene {
   }
 
   create(): void {
-    this.cameras.main.setBackgroundColor("#313c53");
+    this.cameras.main.setBackgroundColor(colors.primary);
+    this.cameras.main.fadeIn(transition.scene, 0, 0, 0);
+
     const screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY =
       this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
     this.add
-      .text(screenCenterX, screenCenterY + 30, `GAME OVER`, {
+      .text(screenCenterX, screenCenterY - 100, `GAME OVER`, {
         font: `30px ${fontFamily}`,
       })
       .setOrigin(0.5)
@@ -33,7 +35,7 @@ export default class GameOver extends Phaser.Scene {
         screenCenterY + 30,
         `You kept the infections at bay for ${this.survivalTime}s`,
         {
-          font: `14px ${fontFamily}`,
+          font: `22px ${fontFamily}`,
         }
       )
       .setOrigin(0.5)
@@ -48,13 +50,5 @@ export default class GameOver extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setAlign("center");
-
-    this.input.on(
-      "pointerup",
-      () => {
-        this.scene.start(EScenes.HIGH_SCORES);
-      },
-      this
-    );
   }
 }

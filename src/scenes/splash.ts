@@ -1,7 +1,7 @@
 import { EAssetKeys } from "./../settings/enums";
 import "phaser";
 import { EScenes } from "../settings/enums";
-import { colors, fontFamily } from "../settings/constants";
+import { colors, fontFamily, transition } from "../settings/constants";
 
 export default class Splash extends Phaser.Scene {
   constructor() {
@@ -14,6 +14,8 @@ export default class Splash extends Phaser.Scene {
 
   create() {
     this.cameras.main.setBackgroundColor(colors.primary);
+    this.cameras.main.fadeIn(transition.scene, 255, 255, 255);
+
     const screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY =

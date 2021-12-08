@@ -1,6 +1,6 @@
 import "phaser";
 import { EScenes } from "../settings/enums";
-import { fontFamily } from "../settings/constants";
+import { colors, fontFamily, transition } from "../settings/constants";
 
 export default class HighScores extends Phaser.Scene {
   constructor() {
@@ -13,7 +13,9 @@ export default class HighScores extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.setBackgroundColor("#313c53");
+    this.cameras.main.setBackgroundColor(colors.primary);
+    this.cameras.main.fadeIn(transition.scene, 0, 0, 0);
+
     const screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2;
     const screenCenterY =

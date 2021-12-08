@@ -3,7 +3,7 @@ import { colors, fontFamily } from "../settings/constants";
 import { IGameStatusUI } from "./../settings/interfaces";
 
 const uiStyles = {
-  font: `12px ${fontFamily}`,
+  font: `14px ${fontFamily}`,
   padding: { x: 10, y: 3 },
   backgroundColor: colors.primary,
   color: colors.white,
@@ -13,16 +13,28 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   private gameScene: Phaser.Scene;
   private availableMasks: number;
   private survivalTime: number;
+  private numberOfInfected: number;
+  private maxNumberOfInfected: number;
   private availableMasksTextObject: Phaser.GameObjects.Text;
   private survivalTimeTextObject: Phaser.GameObjects.Text;
+  private numberOfInfectedTextObject: Phaser.GameObjects.Text;
   private masksText = "MASKS: ";
-  private survivalTexts: "TIME: ";
+  private survivalText: "TIME: ";
+  private infectedText: "INFECTED: ";
 
-  constructor({ gameScene, availableMasks, survivalTime }: IGameStatusUI) {
+  constructor({
+    gameScene,
+    availableMasks,
+    survivalTime,
+    numberOfInfected,
+    maxNumberOfInfected,
+  }: IGameStatusUI) {
     super(gameScene, 0, 0);
 
     this.availableMasks = availableMasks;
     this.survivalTime = survivalTime;
+    this.numberOfInfected = numberOfInfected;
+    this.maxNumberOfInfected = maxNumberOfInfected;
     this.y = -this.height;
     this.x = 0;
     this.width = gameScene.sys.canvas.width;
@@ -35,14 +47,23 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   public setSurvivalTime(survivalTime: number): void {
     this.survivalTime = survivalTime;
     this.survivalTimeTextObject.setText(
-      `${this.survivalTexts ?? "TIME: "} ${this.survivalTime}s`
+      `${this.survivalText ?? "TIME: "} ${this.survivalTime}s`
+    );
+  }
+
+  public setNumberOfInfected(numberOfInfected: number): void {
+    this.numberOfInfected = numberOfInfected;
+    this.numberOfInfectedTextObject.setText(
+      `${this.infectedText ?? "INFECTED: "} ${this.numberOfInfected} / ${
+        this.maxNumberOfInfected
+      }`
     );
   }
 
   public setAvailableMasks(availableMasks: number): void {
     this.availableMasks = availableMasks;
     this.availableMasksTextObject.setText(
-      `${this.masksText} ${this.availableMasks}`
+      `${this.masksText ?? "MASKS: "} ${this.availableMasks}`
     );
   }
 
@@ -54,11 +75,25 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
       .setOrigin(0)
       .setAlign("left");
 
+    this.numberOfInfectedTextObject = this.scene.add
+      .text(
+        this.gameScene.cameras.main.width / 2,
+        20,
+        `${this.infectedText ?? "INFECTED: "} ${this.numberOfInfected} / ${
+          this.maxNumberOfInfected
+        }`,
+        {
+          ...uiStyles,
+        }
+      )
+      .setOrigin(0.5)
+      .setAlign("center");
+
     this.survivalTimeTextObject = this.scene.add
       .text(
         this.gameScene.cameras.main.width - 10,
         10,
-        `${this.survivalTexts ?? "TIME: "} ${this.survivalTime}s`,
+        `${this.survivalText ?? "TIME: "} ${this.survivalTime}s`,
         {
           ...uiStyles,
         }
