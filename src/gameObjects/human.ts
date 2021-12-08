@@ -4,6 +4,7 @@ export default class Human extends Phaser.GameObjects.Sprite {
   isMasked: boolean;
   isInfected: boolean;
   currentMask: Mask
+  disinfectTimer: Phaser.Time.TimerEvent
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture, params.frame);
@@ -30,9 +31,23 @@ export default class Human extends Phaser.GameObjects.Sprite {
 
   infect() {
       this.isInfected = true;
+      this.tint = 0xD2FDCF;
+    }
+    
+    disinfect() {
+        this.isInfected = false;
+        this.tint = 0xffffff;
   }
 
-  disinfect() {
-    this.isInfected = false;
+  setDisinfectTimer(scene: Phaser.Scene) {
+    if(this.disinfectTimer) {
+        this.disinfectTimer.remove();
+        }
+    this.disinfectTimer = scene.time.addEvent({
+        delay: 10000,
+        callback: () => this.disinfect(),
+        callbackScope: scene,
+        loop: false,
+      });
   }
 }

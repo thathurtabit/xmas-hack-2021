@@ -111,6 +111,8 @@ export default class Game extends Phaser.Scene {
 
   private newInfections() {
     this.faces.children.each((human: Human) => {
+      this.addDisinfectTimer(human);
+
       if (human.isInfected && !human.isMasked) {
         this.createCovidParticlesFromFace({
           xSpewPosition: human.x,
@@ -286,43 +288,36 @@ export default class Game extends Phaser.Scene {
     this.masks.add(currentMask);
 
     human.giveMask(currentMask);
-    this.addDestroyMaskTimer(human);
+    this.addDestroyMaskTimer(human, currentMask);
   }
 
   private removeMask(human: Human) {
     if (human.isMasked) {
       human.currentMask.destroy();
+      human.currentMask.destroyMaskTimer.remove();
       human.takeMask();
 
       this.availableMasks++;
       this.masks.remove(human.currentMask);
       this.gameStatusUI.setAvailableMasks(this.availableMasks);
-
     }
   }
 
-  private addDestroyMaskTimer(human: Human) {
-    this.time.addEvent({
+  private addDestroyMaskTimer(human: Human, mask: Mask) {
+    if (mask.destroyMaskTimer) {
+      mask.destroyMaskTimer.remove();
+    }
+
+    const maskTimer = this.time.addEvent({
       delay: 5000,
       callback: () => this.removeMask(human),
       callbackScope: this,
       loop: false,
     });
+    mask.setDestroyMaskTimer(maskTimer);
   }
-
-  private destroyMask(mask: Mask, human: Human): void {
-    this.masks.remove(mask);
-    this.availableMasks++;
-    mask.destroy();
-    human.isMasked = false;
-  }
-
+  
   private addDisinfectTimer(human: Human) {
-    this.time.addEvent({
-      delay: 10000,
-      callback: () => human.disinfect(),
-      callbackScope: this,
-      loop: false,
-    });
+    human.setDisinfectTimer(this);
   }
 }
