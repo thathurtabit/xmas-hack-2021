@@ -28,7 +28,8 @@ export enum EObjectKeys {
 }
 
 export enum EAudioKeys {
-  COUGH = "cough",
+  COUGH_1 = "cough_1",
+  COUGH_2 = "cough_2",
 }
 
 export enum EParticlesCount {

@@ -39,12 +39,12 @@
  "meta": {
   "app": "https://www.aseprite.org/",
   "version": "1.2.30",
-  "image": "Human-0001.png",
+  "image": "human-0001.png",
   "format": "RGBA8888",
   "size": { "w": 116, "h": 31 },
   "scale": "1",
   "frameTags": [
-   { "name": "cough", "from": 0, "to": 3, "direction": "forward" }
+   { "name": "cough_1", "from": 0, "to": 3, "direction": "forward" }
   ]
  }
 }

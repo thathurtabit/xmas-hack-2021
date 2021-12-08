@@ -1,0 +1,50 @@
+{ "frames": [
+   {
+    "filename": "0",
+    "frame": { "x": 0, "y": 0, "w": 56, "h": 60 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 4, "w": 56, "h": 60 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "1",
+    "frame": { "x": 56, "y": 0, "w": 56, "h": 60 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 4, "w": 56, "h": 60 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "2",
+    "frame": { "x": 112, "y": 0, "w": 56, "h": 60 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 4, "w": 56, "h": 60 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   {
+    "filename": "3",
+    "frame": { "x": 168, "y": 0, "w": 56, "h": 60 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 4, "w": 56, "h": 60 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.30",
+  "image": "human-0002.png",
+  "format": "RGBA8888",
+  "size": { "w": 224, "h": 60 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "cough_2", "from": 0, "to": 3, "direction": "forward" }
+  ]
+ }
+}

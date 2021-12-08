@@ -1,4 +1,4 @@
-import { EAssetKeys, EParticlesCount } from "./enums";
+import {EAssetKeys, EAudioKeys, EParticlesCount} from "./enums";
 
 export interface ICovidParticle {
   scene: Phaser.Scene;
@@ -32,6 +32,8 @@ export interface ICreateHumanoid {
   x: number;
   y: number;
   isInfected: boolean;
+  scale: number;
+  animationKey: EAudioKeys;
 }
 
 export interface IGameStatusUI {
