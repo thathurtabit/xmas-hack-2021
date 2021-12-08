@@ -230,36 +230,36 @@ export default class Game extends Phaser.Scene {
       animationKey: EAudioKeys.COUGH_2
     });
     this.createHumanoid({
-      assetKey: EAssetKeys.HUMAN_1,
+      assetKey: EAssetKeys.HUMAN_3,
       x: 600,
       y: 200,
       isInfected: false,
+      scale: 2,
+      animationKey: EAudioKeys.COUGH_3
+    });
+    this.createHumanoid({
+      assetKey: EAssetKeys.HUMAN_1,
+      x: 200,
+      y: 400,
+      isInfected: false,
       scale: 4,
       animationKey: EAudioKeys.COUGH_1
     });
     this.createHumanoid({
       assetKey: EAssetKeys.HUMAN_2,
-      x: 200,
+      x: 400,
       y: 400,
       isInfected: false,
       scale: 2,
       animationKey: EAudioKeys.COUGH_2
     });
     this.createHumanoid({
-      assetKey: EAssetKeys.HUMAN_1,
-      x: 400,
-      y: 400,
-      isInfected: false,
-      scale: 4,
-      animationKey: EAudioKeys.COUGH_1
-    });
-    this.createHumanoid({
-      assetKey: EAssetKeys.HUMAN_2,
+      assetKey: EAssetKeys.HUMAN_3,
       x: 600,
       y: 400,
       isInfected: false,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_2
+      animationKey: EAudioKeys.COUGH_3
     });
   }
 
