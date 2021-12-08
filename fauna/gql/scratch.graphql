@@ -13,3 +13,15 @@ mutation SubmitScore($playerID: ID!, $score: Int!) {
         }
     }
 }
+
+{
+    highScores(_size: 2) {
+        data {
+            timeElapsedMs,
+            player {
+                name
+            }
+        },
+        after
+    }
+}
