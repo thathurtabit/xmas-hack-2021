@@ -21,7 +21,7 @@ export const fetchScoreBoard: (String) => Promise<ScoreBoard> =
 
 export const submitScore: (number, string) => Promise<string> =
   (survivalTime, name) =>
-    fetch(`.netlify/functions/submit-score?elapsedTimeMs=${survivalTime}&name=${name}`)
+    fetch(`.netlify/functions/submit-score?elapsedTimeMs=${survivalTime}&name=${name}`, { method: 'POST' })
     .then(res => res.json())
     .then(json => json.scoreID)
     .catch(err => {
