@@ -1,0 +1,1 @@
+export const formatScore = (score: number) => (+Number(score / 1000).toFixed(3)).toString() + "s"

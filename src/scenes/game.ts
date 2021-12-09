@@ -200,7 +200,7 @@ export default class Game extends Phaser.Scene {
       target: EScenes.GAME_OVER,
       duration: 2000,
       data: {
-        survivalTime: this.survivalTime / 1000,
+        survivalTime: this.survivalTime,
       },
     });
   }

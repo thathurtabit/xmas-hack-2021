@@ -7,6 +7,7 @@ import {
   transition,
 } from "../settings/constants";
 import {NO_SCORE_ID, submitScore} from "../service/ScoreBoardService";
+import {formatScore} from "../utils/formatScore";
 
 export default class GameOver extends Phaser.Scene {
   survivalTime: number;
@@ -59,7 +60,7 @@ export default class GameOver extends Phaser.Scene {
       .text(
         screenCenterX,
         screenCenterY + 30,
-        `You kept the infections at bay for ${this.survivalTime}s`,
+        `You kept the infections at bay for ${formatScore(this.survivalTime)}`,
         {
           font: `22px ${fontFamily}`,
         }
@@ -71,7 +72,7 @@ export default class GameOver extends Phaser.Scene {
       .text(
         screenCenterX,
         screenCenterY -30,
-        `Your personal best time is: ${this.personalBest}s`,
+        `Your personal best time is: ${formatScore(this.personalBest)}`,
         {
           font: `22px ${fontFamily}`,
         }
@@ -111,6 +112,7 @@ export default class GameOver extends Phaser.Scene {
           element.setVisible(false);
           text.setText('Recording for all of time...');
 
+          // TODO: Animations on all this text / removals etc.
           submitScore(this.survivalTime, inputText.value)
             .then(scoreId => {
               text.setText('Done!')

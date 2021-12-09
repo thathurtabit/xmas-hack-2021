@@ -59,7 +59,7 @@ const query = gql`
                 name
             }
         },
-        highScores(_size: 5) {
+        highScores(_size: 10) {
             data {
                 _id,
                 timeElapsedMs,

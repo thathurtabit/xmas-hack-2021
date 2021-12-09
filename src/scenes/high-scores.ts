@@ -5,6 +5,7 @@ import {Scene} from "phaser"
 import {fetchScoreBoard, Score} from "../service/ScoreBoardService"
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle
 import Container = Phaser.GameObjects.Container
+import {formatScore} from "../utils/formatScore";
 
 export default class HighScores extends Phaser.Scene {
   constructor() {
@@ -111,7 +112,7 @@ class ScoreBoardRow extends TwoColumnLayout {
     rowNum: number,
     score: Score
   ) {
-    super(scene, rowNum, score.name, score.timeElapsedMs.toString(), {fixedHeight: ROW_HEIGHT})
+    super(scene, rowNum, score.name, `${formatScore(score.timeElapsedMs)}`, {fixedHeight: ROW_HEIGHT})
     this.setAlpha(0)
     this.setY(rowNum * ROW_HEIGHT + SCORE_BOARD_Y_OFFSET)
     this.addEnterTween(rowNum);
