@@ -47,14 +47,32 @@ export default class Splash extends Phaser.Scene {
       .setAlign("center");
 
     this.add
-      .text(screenCenterX, 500, `Play`, {
-        font: `40px ${fontFamily}`,
+      .text(screenCenterX + 100, 500, `Play`, {
+        font: `30px ${fontFamily}`,
         padding: { x: 20, y: 10 },
         backgroundColor: colors.white,
         color: colors.primary,
       })
       .setOrigin(0.5)
-      .setAlign("center");
+      .setAlign("center")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start(EScenes.GAME);
+      });
+
+    this.add
+      .text(screenCenterX - 100, 500, `High Scores`, {
+        font: `30px ${fontFamily}`,
+        padding: { x: 20, y: 10 },
+        backgroundColor: colors.white,
+        color: colors.primary,
+      })
+      .setOrigin(0.5)
+      .setAlign("center")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start(EScenes.HIGH_SCORES, { fromSplashScene: true });
+      });
 
     this.tweens.add({
       targets: mask,
@@ -64,17 +82,6 @@ export default class Splash extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
-
-    this.input.on(
-      "pointerdown",
-      () => {
-        this.scene.start(EScenes.GAME);
-      },
-      this
-    );
-
-    this.input.on("gameobjectover", (_, gameObject) => {
-      gameObject.setTint(0x7878ff);
-    });
+    
   }
 }

@@ -27,7 +27,6 @@ export default class GameOver extends Phaser.Scene {
     if (this.survivalTime > previousPersonalBest) {
       window.localStorage.setItem(
         localStorageKey,
-
         this.survivalTime.toString()
       );
       this.personalBest = this.survivalTime;
