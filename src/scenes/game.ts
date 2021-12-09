@@ -367,15 +367,31 @@ export default class Game extends Phaser.Scene {
   }
 
   private removeMask(human: Human) {
-    if (human.isMasked) {
-      human.currentMask.destroy();
-      human.currentMask.destroyMaskTimer.remove();
-      human.takeMask();
-
-      this.availableMasks++;
-      this.masks.remove(human.currentMask);
-      this.gameStatusUI.setAvailableMasks(this.availableMasks);
+    if (this.numberOfInfected === 4) {
+      this.faces.children.each((eachHuman: Human) => {
+        if (!eachHuman.isInfected && eachHuman.isMasked) {
+          this.takeMaskAndUpdateUI(eachHuman, false)
+        } else if (!eachHuman.isInfected && !eachHuman.isMasked) {
+          this.addMask(eachHuman)
+        }
+      })
     }
+
+    if (human.isMasked) {
+      this.takeMaskAndUpdateUI(human, true);
+    }
+  }
+
+  private takeMaskAndUpdateUI(human: Human, increaseMasks: boolean) {
+    human.currentMask.destroy();
+    human.currentMask.destroyMaskTimer.remove();
+    human.takeMask();
+
+    if (increaseMasks) {
+      this.availableMasks++;
+    }
+    this.masks.remove(human.currentMask);
+    this.gameStatusUI.setAvailableMasks(this.availableMasks);
   }
 
   private addDestroyMaskTimer(human: Human, mask: Mask) {
