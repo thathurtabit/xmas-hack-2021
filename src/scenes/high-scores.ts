@@ -16,8 +16,6 @@ export default class HighScores extends Phaser.Scene {
     this.load.audio(EAudioKeys.ENDING_MUSIC, "assets/Komiku_-_70_-_Ending.mp3")
   }
 
-  // TODO: This needs passing { scoreID } object once the score has been uploaded
-  //  Assume this is from the previous Scene, but could do it here if needed :-)
   create(data) {
     this.cameras.main.setBackgroundColor(colors.primary)
     this.cameras.main.fadeIn(transition.scene, 0, 0, 0)
@@ -35,7 +33,7 @@ export default class HighScores extends Phaser.Scene {
     })
 
     this.add
-      .text(screenCenterX, 0, `HIGH SCORES`, {
+      .text(screenCenterX, 20, `HIGH SCORES`, {
         font: `30px ${fontFamily}`,
       })
       .setOrigin(0.5, 0)
@@ -70,7 +68,7 @@ const COL_RATIO_NAME = 4
 const COL_RATIO_SCORE = 2
 const COL_RATIO_BORDER = (GRID_DIVISIONS - COL_RATIO_NAME - COL_RATIO_SCORE) / 2
 const ROW_HEIGHT = 35
-const SCORE_BOARD_Y_OFFSET = 50
+const SCORE_BOARD_Y_OFFSET = 75
 
 class TwoColumnLayout extends Container {
 
