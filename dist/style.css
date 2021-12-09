@@ -32,9 +32,11 @@ header h1 {
 }
 
 header p {
+  font-size: 1rem;
   font-family: 'Outfit', sans-serif;
   color: var(--main-alt-text-color);
   font-variation-settings: 'wght' 375, 'GRAD' 88;
+  margin: 0 0 5px;
 }
 
 header p strong {
