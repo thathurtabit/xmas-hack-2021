@@ -1,5 +1,6 @@
 import { colors, fontFamily } from "../settings/constants";
 import Mask from "./mask";
+import {Gender} from "../settings/enums";
 
 export default class Human extends Phaser.GameObjects.Sprite {
   id: string;
@@ -9,6 +10,7 @@ export default class Human extends Phaser.GameObjects.Sprite {
   isAntiMasker: boolean;
   currentMask: Mask;
   disinfectTimer: Phaser.Time.TimerEvent;
+  gender: Gender;
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture, params.frame);
@@ -25,6 +27,7 @@ export default class Human extends Phaser.GameObjects.Sprite {
     this.isInfected = params.isInfected;
     this.isSuperSpreader = params.isSuperSpreader;
     this.isAntiMasker = params.isAntiMasker;
+    this.gender = params.gender;
 
     if (this.isInfected) {
       this.tint = colors.infectedTint;

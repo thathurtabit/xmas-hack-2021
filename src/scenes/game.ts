@@ -6,6 +6,7 @@ import {
   EHumanIDs,
   EParticlesCount,
   EScenes,
+  Gender
 } from "../settings/enums";
 import Mask from "../gameObjects/mask";
 import GameStatusUI from "../gameObjects/gameStatusUI";
@@ -50,6 +51,8 @@ export default class Game extends Phaser.Scene {
       EAudioKeys.GAME_MUSIC,
       "assets/Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.mp3"
     );
+    this.load.audio(EAudioKeys.COUGHING_MAN, "assets/man_coughing.mp3")
+    this.load.audio(EAudioKeys.COUGHING_WOMAN, "assets/woman_coughing.mp3")
   }
 
   create() {
@@ -122,6 +125,13 @@ export default class Game extends Phaser.Scene {
       this.addDisinfectTimer(human);
 
       if (human.isInfected && !human.isMasked) {
+
+        if (human.gender == Gender.MALE) {
+          this.sound.play(EAudioKeys.COUGHING_MAN);
+        } else {
+          this.sound.play(EAudioKeys.COUGHING_WOMAN);
+        }
+
         this.createCovidParticlesFromFace({
           xSpewPosition: human.x,
           ySpewPosition: human.y,
@@ -211,6 +221,7 @@ export default class Game extends Phaser.Scene {
     animationKey,
     isSuperSpreader = false,
     isAntiMasker = false,
+    gender
   }: ICreateHumanoid): Phaser.GameObjects.Sprite {
     this.anims.createFromAseprite(assetKey);
 
@@ -224,6 +235,7 @@ export default class Game extends Phaser.Scene {
       isInfected,
       isSuperSpreader,
       isAntiMasker,
+      gender
     });
 
     this.physics.world.enable(human);
@@ -240,7 +252,7 @@ export default class Game extends Phaser.Scene {
 
   private addHumanoids(): void {
     this.createHumanoid({
-      id: EHumanIDs.HUMAN_1,
+      id: EHumanIDs.HUMAN_5,
       assetKey: EAssetKeys.HUMAN_5,
       x: 200,
       y: 200,
@@ -249,6 +261,7 @@ export default class Game extends Phaser.Scene {
       animationKey: EAudioKeys.COUGH_5,
       isSuperSpreader: true,
       isAntiMasker: true,
+      gender: Gender.FEMALE
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_2,
@@ -258,6 +271,7 @@ export default class Game extends Phaser.Scene {
       isInfected: false,
       scale: 2,
       animationKey: EAudioKeys.COUGH_2,
+      gender: Gender.FEMALE
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_3,
@@ -267,6 +281,7 @@ export default class Game extends Phaser.Scene {
       isInfected: false,
       scale: 2,
       animationKey: EAudioKeys.COUGH_3,
+      gender: Gender.MALE
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_4,
@@ -276,6 +291,7 @@ export default class Game extends Phaser.Scene {
       isInfected: false,
       scale: 4,
       animationKey: EAudioKeys.COUGH_1,
+      gender: Gender.MALE
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_5,
@@ -285,6 +301,7 @@ export default class Game extends Phaser.Scene {
       isInfected: false,
       scale: 2,
       animationKey: EAudioKeys.COUGH_4,
+      gender: Gender.MALE
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_6,
@@ -294,6 +311,7 @@ export default class Game extends Phaser.Scene {
       isInfected: false,
       scale: 2,
       animationKey: EAudioKeys.COUGH_6,
+      gender: Gender.MALE
     });
   }
 

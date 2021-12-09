@@ -43,7 +43,9 @@ export enum EAudioKeys {
   COUGH_4 = "cough_4",
   COUGH_5 = "cough_5",
   COUGH_6 = "cough_6",
-  GAME_MUSIC = "game_music"
+  GAME_MUSIC = "game_music",
+  COUGHING_MAN = "coughing_man",
+  COUGHING_WOMAN = "coughing_woman",
 }
 
 export enum EParticlesCount {
@@ -53,4 +55,9 @@ export enum EParticlesCount {
   FIVE = 5,
   EIGHT = 8,
   TEN = 10,
+}
+
+export enum Gender {
+  MALE = "male",
+  FEMALE = "female"
 }
