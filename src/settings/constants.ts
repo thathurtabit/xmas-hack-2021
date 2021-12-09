@@ -12,4 +12,5 @@ export const covidParticle = {
   width: 20,
   height: 20,
   speed: 125,
+  delayBetweenSpawns: 3000,
 };

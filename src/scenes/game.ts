@@ -10,7 +10,7 @@ import {
 import Mask from "../gameObjects/mask";
 import GameStatusUI from "../gameObjects/gameStatusUI";
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer;
-import { colors, transition } from "../settings/constants";
+import { colors, covidParticle, transition } from "../settings/constants";
 import {
   ICreateCovidParticlesFromFace,
   ICreateHumanoid,
@@ -47,7 +47,10 @@ export default class Game extends Phaser.Scene {
     this.load.tilemapTiledJSON(EAssetKeys.MAP, "assets/map/map-json.json");
     loadHumans(this);
     this.load.image(EAssetKeys.MASK, "assets/mask.png");
-    this.load.audio(EAudioKeys.GAME_MUSIC, "assets/Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.mp3")
+    this.load.audio(
+      EAudioKeys.GAME_MUSIC,
+      "assets/Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.mp3"
+    );
   }
 
   create() {
@@ -87,7 +90,7 @@ export default class Game extends Phaser.Scene {
     this.addHumanoids();
 
     this.time.addEvent({
-      delay: 3000,
+      delay: covidParticle.delayBetweenSpawns,
       callback: () => this.newInfections(),
       callbackScope: this,
       loop: true,
@@ -114,6 +117,8 @@ export default class Game extends Phaser.Scene {
   }
 
   private newInfections() {
+    // TODO: ADD COUGH AUDIO HERE
+
     this.faces.children.each((human: Human) => {
       this.addDisinfectTimer(human);
 
