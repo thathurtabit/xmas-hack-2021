@@ -43,6 +43,7 @@ export enum EAudioKeys {
   COUGH_4 = "cough_4",
   COUGH_5 = "cough_5",
   COUGH_6 = "cough_6",
+  GAME_MUSIC = "game_music"
 }
 
 export enum EParticlesCount {

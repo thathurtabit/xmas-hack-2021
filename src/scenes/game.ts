@@ -47,11 +47,14 @@ export default class Game extends Phaser.Scene {
     this.load.tilemapTiledJSON(EAssetKeys.MAP, "assets/map/map-json.json");
     loadHumans(this);
     this.load.image(EAssetKeys.MASK, "assets/mask.png");
+    this.load.audio(EAudioKeys.GAME_MUSIC, "assets/Loyalty_Freak_Music_-_04_-_Cant_Stop_My_Feet_.mp3")
   }
 
   create() {
     this.cameras.main.setBackgroundColor(colors.white);
     this.cameras.main.fadeIn(transition.scene, 255, 255, 255);
+
+    this.sound.add(EAudioKeys.GAME_MUSIC).play();
 
     // Each 100ms call onEvent
     this.survivalTimerEvent = this.time.addEvent({
@@ -148,6 +151,7 @@ export default class Game extends Phaser.Scene {
 
     if (isHumanAbleToBeInfected && !human.isInfected) {
       human.infect();
+      // human.play({ key: human.texture.toString(), repeat: 1 });
       this.incrementInfectedCount();
     }
 
@@ -221,8 +225,6 @@ export default class Game extends Phaser.Scene {
     (human.body as Phaser.Physics.Arcade.Body).setImmovable(true);
 
     this.addMaskOnClick(human);
-
-    human.play({ key: animationKey, repeat: -1 });
 
     this.faces.add(human);
 
