@@ -45,7 +45,7 @@ export default class HighScores extends Phaser.Scene {
       .setAlign("center")
 
     this.add
-      .text(screenCenterX, 500, `TRY AGAIN`, {
+      .text(screenCenterX, 535, `TRY AGAIN`, {
         font: `40px ${fontFamily}`,
         padding: { x: 20, y: 10 },
         backgroundColor: "#fff",
