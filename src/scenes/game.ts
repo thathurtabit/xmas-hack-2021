@@ -304,21 +304,25 @@ export default class Game extends Phaser.Scene {
     });
   }
 
-  private getMaskPosition(human: Human): { x: number; y: number } {
+  private getMaskPosition(human: Human): {
+    x: number;
+    y: number;
+    scale: number;
+  } {
     switch (human.id) {
       // TODO: tweak each mask position below...
       case EHumanIDs.HUMAN_2:
-        return { x: human.x, y: human.y + 10 };
+        return { x: human.x - 3, y: human.y + 17, scale: 0.8 };
       case EHumanIDs.HUMAN_3:
-        return { x: human.x, y: human.y + 20 };
+        return { x: human.x - 2, y: human.y + 25, scale: 0.75 };
       case EHumanIDs.HUMAN_4:
-        return { x: human.x - 5, y: human.y + 8 };
+        return { x: human.x - 5, y: human.y + 12, scale: 0.9 };
       case EHumanIDs.HUMAN_5:
-        return { x: human.x, y: human.y + 15 };
+        return { x: human.x, y: human.y + 20, scale: 0.8 };
       case EHumanIDs.HUMAN_6:
-        return { x: human.x, y: human.y + 15 };
+        return { x: human.x, y: human.y + 22, scale: 0.75 };
       default:
-        return { x: human.x, y: human.y };
+        return { x: human.x, y: human.y, scale: 1 };
     }
   }
 
