@@ -128,7 +128,7 @@ export default class Game extends Phaser.Scene {
 
   private incrementGameTimer(): void {
     this.survivalTime += this.timerIncrementMS;
-    this.gameStatusUI.setSurvivalTime(this.survivalTime / 1000);
+    this.gameStatusUI.setSurvivalTime(this.survivalTime);
   }
 
   private newInfections() {

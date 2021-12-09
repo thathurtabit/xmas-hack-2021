@@ -44,9 +44,8 @@ export default class HighScores extends Phaser.Scene {
       .setOrigin(0.5, 0)
       .setAlign("center")
 
-    // TODO: we can't seem to reset the game without errors... we need to refresh browser :(
     this.add
-      .text(screenCenterX, 500, `SPLASH`, {
+      .text(screenCenterX, 500, `TRY AGAIN`, {
         font: `40px ${fontFamily}`,
         padding: { x: 20, y: 10 },
         backgroundColor: "#fff",

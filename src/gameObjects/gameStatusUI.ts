@@ -1,6 +1,7 @@
 import "phaser";
 import { colors, fontFamily, localStorageKey } from "../settings/constants";
 import { IGameStatusUI } from "./../settings/interfaces";
+import {formatScore} from "../utils/formatScore";
 
 const uiStyles = {
   font: `14px ${fontFamily}`,
@@ -54,7 +55,7 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   public setSurvivalTime(survivalTime: number): void {
     this.survivalTime = survivalTime;
     this.survivalTimeTextObject.setText(
-      `${this.survivalText ?? "TIME: "} ${this.survivalTime}s`
+      `${this.survivalText ?? "TIME: "} ${formatScore(this.survivalTime)}`
     );
   }
 
@@ -114,7 +115,7 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
       .text(
         this.gameScene.cameras.main.width - 10,
         this.gameScene.cameras.main.height - 10,
-        `${this.personalBestText ?? "BEST TIME: "} ${this.personalBest}s`,
+        `${this.personalBestText ?? "BEST TIME: "} ${formatScore(this.personalBest)}`,
         {
           ...uiStyles,
         }
