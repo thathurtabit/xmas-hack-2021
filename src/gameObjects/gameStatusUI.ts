@@ -63,7 +63,7 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   public setAvailableMasks(availableMasks: number): void {
     this.availableMasks = availableMasks;
     this.availableMasksTextObject.setText(
-      `${this.masksText ?? "AVAILABLE MASKS: "} ${this.availableMasks}`
+      `${this.masksText ?? "AVAILABLE MASKS: "} ${this.availableMasks < 0 ? 0 : this.availableMasks}`
     );
   }
 

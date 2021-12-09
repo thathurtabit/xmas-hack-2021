@@ -28,7 +28,6 @@ export default class Game extends Phaser.Scene {
   gameScene: Phaser.Scene;
 
   availableMasks = 4;
-  maxAvailableMasks = 4;
   timerIncrementMS = 100;
   survivalTime = 0;
   numberOfInfected: number;
@@ -158,6 +157,9 @@ export default class Game extends Phaser.Scene {
       human.infect();
       // human.play({ key: human.texture.toString(), repeat: 1 });
       this.incrementInfectedCount();
+      
+      this.availableMasks--;
+      this.gameStatusUI.setAvailableMasks(this.availableMasks);
     }
 
     if (
