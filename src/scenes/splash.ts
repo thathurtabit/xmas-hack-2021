@@ -68,7 +68,7 @@ export default class Splash extends Phaser.Scene {
     this.input.on(
       "pointerdown",
       () => {
-        this.scene.start(EScenes.HIGH_SCORES, { survivalTime: 1001, name: "Mr. Big" });
+        this.scene.start(EScenes.HIGH_SCORES, { survivalTime: 1001, name: "Mr. Big", scoreID: "317345465709363267" });
       },
       this
     );

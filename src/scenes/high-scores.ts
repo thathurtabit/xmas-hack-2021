@@ -110,6 +110,6 @@ class ScoreBoardHeading extends TwoColumnLayout {
   constructor(
     public scene: Scene
   ) {
-    super(scene, 0, "NAME", "Score")
+    super(scene, 0, "NAME", "SCORE", { fontStyle: "bold" })
   }
 }
