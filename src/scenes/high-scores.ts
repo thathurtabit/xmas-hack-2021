@@ -1,5 +1,5 @@
 import "phaser"
-import {EScenes} from "../settings/enums"
+import {EAudioKeys, EScenes} from "../settings/enums"
 import {colors, fontFamily, transition} from "../settings/constants"
 import {Scene} from "phaser"
 import {fetchScoreBoard, Score} from "../service/ScoreBoardService"
@@ -11,6 +11,10 @@ export default class HighScores extends Phaser.Scene {
     super(EScenes.HIGH_SCORES)
   }
 
+  preload() {
+    this.load.audio(EAudioKeys.ENDING_MUSIC, "assets/Komiku_-_70_-_Ending.mp3")
+  }
+
   // TODO: This needs passing { scoreID } object once the score has been uploaded
   //  Assume this is from the previous Scene, but could do it here if needed :-)
   create(data) {
@@ -18,6 +22,9 @@ export default class HighScores extends Phaser.Scene {
     this.cameras.main.fadeIn(transition.scene, 0, 0, 0)
     const screenCenterX =
       this.cameras.main.worldView.x + this.cameras.main.width / 2
+
+    this.sound.stopAll();
+    this.sound.play(EAudioKeys.ENDING_MUSIC);
 
     fetchScoreBoard(data.scoreID).then(scoreBoard => {
       this.add.existing(new ScoreBoardHeading(this))

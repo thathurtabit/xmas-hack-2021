@@ -44,6 +44,8 @@ export enum EAudioKeys {
   COUGH_5 = "cough_5",
   COUGH_6 = "cough_6",
   GAME_MUSIC = "game_music",
+  MENU_MUSIC = "menu_music",
+  ENDING_MUSIC = "ending_music",
   COUGHING_MAN = "coughing_man",
   COUGHING_WOMAN = "coughing_woman",
 }
