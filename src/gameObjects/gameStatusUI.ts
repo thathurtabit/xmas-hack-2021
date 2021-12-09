@@ -18,7 +18,7 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   private availableMasksTextObject: Phaser.GameObjects.Text;
   private survivalTimeTextObject: Phaser.GameObjects.Text;
   private numberOfInfectedTextObject: Phaser.GameObjects.Text;
-  private masksText = "MASKS: ";
+  private masksText = "AVAILABLE MASKS: ";
   private survivalText: "TIME: ";
   private infectedText: "INFECTED: ";
 
@@ -63,7 +63,7 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   public setAvailableMasks(availableMasks: number): void {
     this.availableMasks = availableMasks;
     this.availableMasksTextObject.setText(
-      `${this.masksText ?? "MASKS: "} ${this.availableMasks}`
+      `${this.masksText ?? "AVAILABLE MASKS: "} ${this.availableMasks}`
     );
   }
 

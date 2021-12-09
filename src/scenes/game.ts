@@ -37,7 +37,7 @@ export default class Game extends Phaser.Scene {
   constructor() {
     super(EScenes.GAME);
     this.numberOfInfected = 1;
-    this.maxNumberOfInfected = 6;
+    this.maxNumberOfInfected = 5;
   }
 
   preload() {
