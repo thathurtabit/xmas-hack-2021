@@ -1,5 +1,5 @@
 import "phaser";
-import { colors, fontFamily } from "../settings/constants";
+import { colors, fontFamily, localStorageKey } from "../settings/constants";
 import { IGameStatusUI } from "./../settings/interfaces";
 
 const uiStyles = {
@@ -13,14 +13,17 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   private gameScene: Phaser.Scene;
   private availableMasks: number;
   private survivalTime: number;
+  private personalBest: number;
   private numberOfInfected: number;
   private maxNumberOfInfected: number;
   private availableMasksTextObject: Phaser.GameObjects.Text;
   private survivalTimeTextObject: Phaser.GameObjects.Text;
   private numberOfInfectedTextObject: Phaser.GameObjects.Text;
+  private personalBestTextObject: Phaser.GameObjects.Text;
   private masksText = "AVAILABLE MASKS: ";
   private survivalText: "TIME: ";
   private infectedText: "INFECTED: ";
+  private personalBestText: "BEST TIME: ";
 
   constructor({
     gameScene,
@@ -39,6 +42,10 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
     this.x = 0;
     this.width = gameScene.sys.canvas.width;
     this.gameScene = gameScene;
+
+    this.personalBest = Number(
+      window.localStorage.getItem(localStorageKey) || 0
+    );
 
     this.init();
     this.addTween();
@@ -63,7 +70,9 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
   public setAvailableMasks(availableMasks: number): void {
     this.availableMasks = availableMasks;
     this.availableMasksTextObject.setText(
-      `${this.masksText ?? "AVAILABLE MASKS: "} ${this.availableMasks < 0 ? 0 : this.availableMasks}`
+      `${this.masksText ?? "AVAILABLE MASKS: "} ${
+        this.availableMasks < 0 ? 0 : this.availableMasks
+      }`
     );
   }
 
@@ -101,7 +110,17 @@ export default class GameStatusUI extends Phaser.GameObjects.Container {
       .setOrigin(1, 0)
       .setAlign("right");
 
-    //this.gameScene.add.existing(this);
+    this.personalBestTextObject = this.scene.add
+      .text(
+        this.gameScene.cameras.main.width - 10,
+        this.gameScene.cameras.main.height - 10,
+        `${this.personalBestText ?? "BEST TIME: "} ${this.personalBest}s`,
+        {
+          ...uiStyles,
+        }
+      )
+      .setOrigin(1, 1)
+      .setAlign("right");
   }
 
   private addTween(): void {
