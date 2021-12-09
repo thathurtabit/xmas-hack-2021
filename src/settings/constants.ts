@@ -12,6 +12,6 @@ export const fontFamily = '"Outfit", sans-serif';
 export const covidParticle = {
   width: 20,
   height: 20,
-  speed: 100,
+  speed: 90,
   delayBetweenSpawns: 3000,
 };

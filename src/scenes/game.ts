@@ -258,11 +258,11 @@ export default class Game extends Phaser.Scene {
       x: 200,
       y: 200,
       isInfected: true,
-      scale: 2,
+      scale: 1.75,
       animationKey: EAudioKeys.COUGH_5,
       isSuperSpreader: true,
       isAntiMasker: true,
-      gender: Gender.FEMALE
+      gender: Gender.FEMALE,
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_2,
@@ -270,9 +270,9 @@ export default class Game extends Phaser.Scene {
       x: 400,
       y: 200,
       isInfected: false,
-      scale: 2,
+      scale: 1.75,
       animationKey: EAudioKeys.COUGH_2,
-      gender: Gender.FEMALE
+      gender: Gender.FEMALE,
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_3,
@@ -280,9 +280,9 @@ export default class Game extends Phaser.Scene {
       x: 600,
       y: 200,
       isInfected: false,
-      scale: 2,
+      scale: 1.75,
       animationKey: EAudioKeys.COUGH_3,
-      gender: Gender.MALE
+      gender: Gender.MALE,
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_4,
@@ -290,9 +290,9 @@ export default class Game extends Phaser.Scene {
       x: 200,
       y: 400,
       isInfected: false,
-      scale: 4,
+      scale: 3.5,
       animationKey: EAudioKeys.COUGH_1,
-      gender: Gender.MALE
+      gender: Gender.MALE,
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_5,
@@ -300,9 +300,9 @@ export default class Game extends Phaser.Scene {
       x: 400,
       y: 400,
       isInfected: false,
-      scale: 2,
+      scale: 1.75,
       animationKey: EAudioKeys.COUGH_4,
-      gender: Gender.MALE
+      gender: Gender.MALE,
     });
     this.createHumanoid({
       id: EHumanIDs.HUMAN_6,
@@ -310,9 +310,9 @@ export default class Game extends Phaser.Scene {
       x: 600,
       y: 400,
       isInfected: false,
-      scale: 2,
+      scale: 1.75,
       animationKey: EAudioKeys.COUGH_6,
-      gender: Gender.MALE
+      gender: Gender.MALE,
     });
   }
 
@@ -338,15 +338,15 @@ export default class Game extends Phaser.Scene {
     switch (human.id) {
       // TODO: tweak each mask position below...
       case EHumanIDs.HUMAN_2:
-        return { x: human.x - 3, y: human.y + 17, scale: 0.8 };
+        return { x: human.x - 3, y: human.y + 17, scale: 0.7 };
       case EHumanIDs.HUMAN_3:
-        return { x: human.x - 2, y: human.y + 25, scale: 0.75 };
+        return { x: human.x - 2, y: human.y + 25, scale: 0.7 };
       case EHumanIDs.HUMAN_4:
-        return { x: human.x - 5, y: human.y + 12, scale: 0.9 };
+        return { x: human.x - 5, y: human.y + 12, scale: 0.8 };
       case EHumanIDs.HUMAN_5:
-        return { x: human.x, y: human.y + 20, scale: 0.8 };
+        return { x: human.x, y: human.y + 20, scale: 0.7 };
       case EHumanIDs.HUMAN_6:
-        return { x: human.x, y: human.y + 22, scale: 0.75 };
+        return { x: human.x, y: human.y + 22, scale: 0.65 };
       default:
         return { x: human.x, y: human.y, scale: 1 };
     }
