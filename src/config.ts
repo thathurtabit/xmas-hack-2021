@@ -16,5 +16,9 @@ export const config = {
       //debug: true,
     },
   },
+  dom: {
+    createContainer: true,
+  },
+  parent: "phaser-game",
   scene: [Splash, Game, GameOver, HighScores],
 };
