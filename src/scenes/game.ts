@@ -316,16 +316,25 @@ export default class Game extends Phaser.Scene {
     });
   }
 
-  private addMaskOnClick(human: Human) {
-    human.setInteractive().on("pointerdown", () => {
-      if (human.isAntiMasker) {
-        human.refuseMask();
-      } else if (this.availableMasks > 0 && !human.isMasked) {
-        this.availableMasks--;
-        this.addMask(human);
+  private addMaskOnClick(clickedHuman: Human) {
+    clickedHuman.setInteractive().on("pointerdown", () => {
+      if (clickedHuman.isAntiMasker) {
+        clickedHuman.refuseMask();
+      } else if (this.numberOfInfected === 4) {
+        this.faces.children.each((otherHuman: Human) => {
+          if (!clickedHuman.isMasked && otherHuman.isMasked) {
+            this.removeMask(otherHuman);
+            this.addMask(clickedHuman);
+          } else if (this.availableMasks > 0 && !clickedHuman.isMasked) {
+            this.addMask(clickedHuman);
+            this.gameStatusUI.setAvailableMasks(this.availableMasks);
+          }
+        })
+      } else if (this.availableMasks > 0 && !clickedHuman.isMasked) {
+        this.addMask(clickedHuman);
         this.gameStatusUI.setAvailableMasks(this.availableMasks);
-      } else if (human.isMasked) {
-        this.removeMask(human);
+      } else if (clickedHuman.isMasked) {
+        this.removeMask(clickedHuman);
       }
     });
   }
@@ -362,35 +371,18 @@ export default class Game extends Phaser.Scene {
     });
 
     this.masks.add(currentMask);
+    this.availableMasks--;
 
     human.giveMask(currentMask);
     this.addDestroyMaskTimer(human, currentMask);
   }
 
   private removeMask(human: Human) {
-    if (this.numberOfInfected === 4) {
-      this.faces.children.each((eachHuman: Human) => {
-        if (!eachHuman.isInfected && eachHuman.isMasked) {
-          this.takeMaskAndUpdateUI(eachHuman, false)
-        } else if (!eachHuman.isInfected && !eachHuman.isMasked) {
-          this.addMask(eachHuman)
-        }
-      })
-    }
-
-    if (human.isMasked) {
-      this.takeMaskAndUpdateUI(human, true);
-    }
-  }
-
-  private takeMaskAndUpdateUI(human: Human, increaseMasks: boolean) {
     human.currentMask.destroy();
     human.currentMask.destroyMaskTimer.remove();
     human.takeMask();
 
-    if (increaseMasks) {
-      this.availableMasks++;
-    }
+    this.availableMasks++;
     this.masks.remove(human.currentMask);
     this.gameStatusUI.setAvailableMasks(this.availableMasks);
   }
