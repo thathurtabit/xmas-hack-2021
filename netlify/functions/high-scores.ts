@@ -13,18 +13,29 @@ const handler: Handler = async (event) => {
 
     const data = await getGQLClient().request(query, {scoreID})
 
-    const scores = data.highScores.data.map(({_id, timeElapsedMs, player: { name }}) => ({ _id, timeElapsedMs, name }))
-    if (!scores.find(score => score._id === data.playerScore._id)) {
+    const scores = data.highScores.data.map(
+        ({
+             _id,
+             timeElapsedMs,
+             player: { name }
+        }) =>
+            ({
+                name,
+                timeElapsedMs,
+                isPlayer: _id == data.playerScore._id,
+            })
+    )
+    if (!scores.find(score => score.isPlayer)) {
         scores.push({
-            _id: data.playerScore._id,
+            name: data.playerScore.player.name,
             timeElapsedMs: data.playerScore.timeElapsedMs,
-            name: data.playerScore.player.name
+            isPlayer: true,
         })
     }
 
     return {
         statusCode: 200,
-        body: JSON.stringify(scores),
+        body: JSON.stringify({ highScores: scores }),
     }
 }
 
