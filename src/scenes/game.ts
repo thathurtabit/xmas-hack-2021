@@ -36,8 +36,13 @@ export default class Game extends Phaser.Scene {
 
   constructor() {
     super(EScenes.GAME);
-    this.numberOfInfected = 1;
     this.maxNumberOfInfected = 5;
+  }
+
+  init() {
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.time.removeAllEvents()
+    })
   }
 
   preload() {
@@ -56,6 +61,8 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
+    this.initGameState();
+
     this.cameras.main.setBackgroundColor(colors.white);
     this.cameras.main.fadeIn(transition.scene, 255, 255, 255);
 
@@ -99,6 +106,12 @@ export default class Game extends Phaser.Scene {
     });
 
     this.addGameUI();
+  }
+
+  private initGameState() {
+    this.availableMasks = 4;
+    this.survivalTime = 0;
+    this.numberOfInfected = 1;
   }
 
   private addGameUI(): void {
@@ -194,8 +207,6 @@ export default class Game extends Phaser.Scene {
   }
 
   private handleGameOver(): void {
-    this.survivalTimerEvent.paused = true;
-
     this.scene.transition({
       target: EScenes.GAME_OVER,
       duration: 2000,

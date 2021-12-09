@@ -24,6 +24,9 @@ export default class HighScores extends Phaser.Scene {
 
     this.sound.stopAll();
     this.sound.play(EAudioKeys.ENDING_MUSIC);
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.sound.stopByKey(EAudioKeys.ENDING_MUSIC)
+    })
 
     fetchScoreBoard(data.scoreID).then(scoreBoard => {
       this.add.existing(new ScoreBoardHeading(this))
@@ -42,24 +45,23 @@ export default class HighScores extends Phaser.Scene {
       .setAlign("center")
 
     // TODO: we can't seem to reset the game without errors... we need to refresh browser :(
-    // this.add
-    //   .text(screenCenterX, 500, `SPLASH`, {
-    //     font: `40px ${fontFamily}`,
-    //     padding: { x: 20, y: 10 },
-    //     backgroundColor: "#fff",
-    //     color: "#000",
-    //   })
-    //   .setOrigin(0.5)
-    //   .setAlign("center")
+    this.add
+      .text(screenCenterX, 500, `SPLASH`, {
+        font: `40px ${fontFamily}`,
+        padding: { x: 20, y: 10 },
+        backgroundColor: "#fff",
+        color: "#000",
+      })
+      .setOrigin(0.5)
+      .setAlign("center")
 
-    // this.input.on(
-    //   "pointerdown",
-    //   () => {
-    //     this.scene.restart();
-    //     this.scene.start(EScenes.SPLASH)
-    //   },
-    //   this
-    // )
+    this.input.on(
+      "pointerdown",
+      () => {
+        this.scene.start(EScenes.SPLASH)
+      },
+      this
+    )
   }
 }
 
