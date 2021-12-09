@@ -1,4 +1,5 @@
 import "phaser";
+
 import { EScenes } from "../settings/enums";
 import {
   colors,
@@ -6,8 +7,8 @@ import {
   localStorageKey,
   transition,
 } from "../settings/constants";
-import {NO_SCORE_ID, submitScore} from "../service/ScoreBoardService";
-import {formatScore} from "../utils/formatScore";
+import { NO_SCORE_ID, submitScore } from "../service/ScoreBoardService";
+import { formatScore } from "../utils/formatScore";
 
 export default class GameOver extends Phaser.Scene {
   survivalTime: number;
@@ -33,10 +34,16 @@ export default class GameOver extends Phaser.Scene {
     } else {
       this.personalBest = previousPersonalBest;
     }
+
+    gtag("event", "game_over", {
+      event_category: "game",
+      event_label: "game_score",
+      event_value: `${survivalTime / 1000}`,
+    });
   }
 
   preload() {
-    this.load.html('nameform', 'assets/nameform.html');
+    this.load.html("nameform", "assets/nameform.html");
   }
 
   create(): void {
@@ -70,7 +77,7 @@ export default class GameOver extends Phaser.Scene {
     this.add
       .text(
         screenCenterX,
-        screenCenterY -30,
+        screenCenterY - 30,
         `Your personal best time is: ${formatScore(this.personalBest)}`,
         {
           font: `22px ${fontFamily}`,
@@ -108,30 +115,36 @@ export default class GameOver extends Phaser.Scene {
         this.scene.start(EScenes.SPLASH);
       });
 
-    const text = this.add.text(screenCenterX, screenCenterY + 100, '', { color: 'white', fontSize: '20px '}).setOrigin(0.5, 0);
+    const text = this.add
+      .text(screenCenterX, screenCenterY + 100, "", {
+        color: "white",
+        fontSize: "20px ",
+      })
+      .setOrigin(0.5, 0);
 
-    const element = this.add.dom(screenCenterX, screenCenterY + 100).createFromCache('nameform').setOrigin(0.5, 0);
+    const element = this.add
+      .dom(screenCenterX, screenCenterY + 100)
+      .createFromCache("nameform")
+      .setOrigin(0.5, 0);
 
-    element.addListener('click');
+    element.addListener("click");
 
-    element.on('click', (event) => {
+    element.on("click", (event) => {
+      if (event.target.name === "submitButton") {
+        const inputText = element.getChildByName(
+          "nameField"
+        ) as HTMLInputElement;
 
-      if (event.target.name === 'submitButton')
-      {
-        const inputText = element.getChildByName('nameField') as HTMLInputElement;
-
-        if (inputText.value !== '')
-        {
-          element.removeListener('click');
+        if (inputText.value !== "") {
+          element.removeListener("click");
           element.setVisible(false);
-          text.setText('Recording for all of time...');
+          text.setText("Recording for all of time...");
 
           // TODO: Animations on all this text / removals etc.
-          submitScore(this.survivalTime, inputText.value)
-            .then(scoreId => {
-              text.setText('Done!')
-              this.scoreId = scoreId
-            })
+          submitScore(this.survivalTime, inputText.value).then((scoreId) => {
+            text.setText("Done!");
+            this.scoreId = scoreId;
+          });
         }
       }
     });
