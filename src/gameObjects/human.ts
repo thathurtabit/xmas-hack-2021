@@ -42,6 +42,13 @@ export default class Human extends Phaser.GameObjects.Sprite {
 
   private setSuperSpreader(): void {
     this.scene.add
+      .text(this.x, this.y - 95, `INFECTED`, {
+        font: `10px ${fontFamily}`,
+        color: colors.primary,
+      })
+      .setOrigin(0.5, 0)
+      .setAlign("center");
+    this.scene.add
       .text(this.x, this.y - 80, `SUPER-SPREADER`, {
         font: `10px ${fontFamily}`,
         color: colors.primary,
