@@ -80,7 +80,7 @@ export default class GameOver extends Phaser.Scene {
       .setAlign("center");
 
     this.add
-      .text(screenCenterX - 200, 550, `High Scores`, {
+      .text(screenCenterX - 120, 520, `High Scores`, {
         font: `30px ${fontFamily}`,
         padding: { x: 20, y: 10 },
         backgroundColor: colors.white,
@@ -94,19 +94,19 @@ export default class GameOver extends Phaser.Scene {
       });
 
     this.add
-        .text(screenCenterX + 200, 550, 'Play Again', {
-          font: `30px ${fontFamily}`,
-          padding: { x: 20, y: 10 },
-          backgroundColor: colors.white,
-          color: colors.primary,
-        })
-        .setOrigin(0.5)
-        .setAlign("center")
-        .setInteractive()
-        .on("pointerdown", () => {
-          this.sound.stopAll();
-          this.scene.start(EScenes.SPLASH);
-        });
+      .text(screenCenterX + 120, 520, "Play Again", {
+        font: `30px ${fontFamily}`,
+        padding: { x: 20, y: 10 },
+        backgroundColor: colors.white,
+        color: colors.primary,
+      })
+      .setOrigin(0.5)
+      .setAlign("center")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.sound.stopAll();
+        this.scene.start(EScenes.SPLASH);
+      });
 
     const text = this.add.text(screenCenterX, screenCenterY + 100, '', { color: 'white', fontSize: '20px '}).setOrigin(0.5, 0);
 
