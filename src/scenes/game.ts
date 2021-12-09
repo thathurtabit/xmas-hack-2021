@@ -3,6 +3,7 @@ import "phaser";
 import {
   EAssetKeys,
   EAudioKeys,
+  EHumanIDs,
   EParticlesCount,
   EScenes,
 } from "../settings/enums";
@@ -143,14 +144,18 @@ export default class Game extends Phaser.Scene {
     covidParticle: Phaser.GameObjects.GameObject,
     human: Phaser.GameObjects.GameObject
   ) {
-    const isHumanAbleToBeInfected = human instanceof Human && !human.isMasked
+    const isHumanAbleToBeInfected = human instanceof Human && !human.isMasked;
 
     if (isHumanAbleToBeInfected && !human.isInfected) {
       human.infect();
       this.incrementInfectedCount();
     }
 
-    if (covidParticle instanceof CovidParticle && covidParticle.destroyable && isHumanAbleToBeInfected) {
+    if (
+      covidParticle instanceof CovidParticle &&
+      covidParticle.destroyable &&
+      isHumanAbleToBeInfected
+    ) {
       covidParticle.destroy();
     }
   }
@@ -186,22 +191,28 @@ export default class Game extends Phaser.Scene {
   }
 
   private createHumanoid({
+    id,
     assetKey,
     x,
     y,
     isInfected,
     scale,
-    animationKey
+    animationKey,
+    isSuperSpreader = false,
+    isAntiMasker = false,
   }: ICreateHumanoid): Phaser.GameObjects.Sprite {
     this.anims.createFromAseprite(assetKey);
 
     const human = new Human({
+      id,
       scene: this,
-      x: x,
-      y: y,
+      x,
+      y,
       texture: assetKey,
-      scale: scale,
-      isInfected: isInfected,
+      scale,
+      isInfected,
+      isSuperSpreader,
+      isAntiMasker,
     });
 
     this.physics.world.enable(human);
@@ -220,58 +231,68 @@ export default class Game extends Phaser.Scene {
 
   private addHumanoids(): void {
     this.createHumanoid({
+      id: EHumanIDs.HUMAN_1,
       assetKey: EAssetKeys.HUMAN_5,
       x: 200,
       y: 200,
       isInfected: true,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_5
+      animationKey: EAudioKeys.COUGH_5,
+      isSuperSpreader: true,
+      isAntiMasker: true,
     });
     this.createHumanoid({
+      id: EHumanIDs.HUMAN_2,
       assetKey: EAssetKeys.HUMAN_2,
       x: 400,
       y: 200,
       isInfected: false,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_2
+      animationKey: EAudioKeys.COUGH_2,
     });
     this.createHumanoid({
+      id: EHumanIDs.HUMAN_3,
       assetKey: EAssetKeys.HUMAN_3,
       x: 600,
       y: 200,
       isInfected: false,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_3
+      animationKey: EAudioKeys.COUGH_3,
     });
     this.createHumanoid({
+      id: EHumanIDs.HUMAN_4,
       assetKey: EAssetKeys.HUMAN_1,
       x: 200,
       y: 400,
       isInfected: false,
       scale: 4,
-      animationKey: EAudioKeys.COUGH_1
+      animationKey: EAudioKeys.COUGH_1,
     });
     this.createHumanoid({
+      id: EHumanIDs.HUMAN_5,
       assetKey: EAssetKeys.HUMAN_4,
       x: 400,
       y: 400,
       isInfected: false,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_4
+      animationKey: EAudioKeys.COUGH_4,
     });
     this.createHumanoid({
+      id: EHumanIDs.HUMAN_6,
       assetKey: EAssetKeys.HUMAN_6,
       x: 600,
       y: 400,
       isInfected: false,
       scale: 2,
-      animationKey: EAudioKeys.COUGH_6
+      animationKey: EAudioKeys.COUGH_6,
     });
   }
 
   private addMaskOnClick(human: Human) {
     human.setInteractive().on("pointerdown", () => {
-      if (this.availableMasks > 0 && !human.isMasked) {
+      if (human.isAntiMasker) {
+        human.refuseMask();
+      } else if (this.availableMasks > 0 && !human.isMasked) {
         this.availableMasks--;
         this.addMask(human);
         this.gameStatusUI.setAvailableMasks(this.availableMasks);
@@ -281,12 +302,31 @@ export default class Game extends Phaser.Scene {
     });
   }
 
+  private getMaskPosition(human: Human): { x: number; y: number } {
+    switch (human.id) {
+      // TODO: tweak each mask position below...
+      case EHumanIDs.HUMAN_2:
+        return { x: human.x, y: human.y + 10 };
+      case EHumanIDs.HUMAN_3:
+        return { x: human.x, y: human.y + 20 };
+      case EHumanIDs.HUMAN_4:
+        return { x: human.x - 5, y: human.y + 8 };
+      case EHumanIDs.HUMAN_5:
+        return { x: human.x, y: human.y + 15 };
+      case EHumanIDs.HUMAN_6:
+        return { x: human.x, y: human.y + 15 };
+      default:
+        return { x: human.x, y: human.y };
+    }
+  }
+
   private addMask(human: Human) {
+    const maskPosition = this.getMaskPosition(human);
+
     const currentMask = new Mask({
       scene: this,
-      x: human.x - 5,
-      y: human.y + 6,
       texture: EAssetKeys.MASK,
+      ...maskPosition,
     });
 
     this.masks.add(currentMask);
@@ -312,7 +352,7 @@ export default class Game extends Phaser.Scene {
       mask.destroyMaskTimer.remove();
     }
 
-    const delayBeforeMaskDestroy = 5000
+    const delayBeforeMaskDestroy = 5000;
 
     const maskTimer = this.time.addEvent({
       delay: delayBeforeMaskDestroy,
@@ -332,12 +372,13 @@ export default class Game extends Phaser.Scene {
   private tweenMaskIsTimingOut = (mask: Mask) => {
     this.tweens.add({
       targets: mask,
-      alpha: 0.5,
-      duration: 500,
+      alpha: 0.8,
+      y: mask.y + 10,
+      duration: 300,
       repeat: -1,
     });
-  }
-  
+  };
+
   private addDisinfectTimer(human: Human) {
     human.setDisinfectTimer(this);
   }

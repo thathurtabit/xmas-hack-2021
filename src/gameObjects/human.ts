@@ -1,14 +1,18 @@
-import { colors } from "../settings/constants";
+import { colors, fontFamily } from "../settings/constants";
 import Mask from "./mask";
 
 export default class Human extends Phaser.GameObjects.Sprite {
+  id: string;
   isMasked: boolean;
   isInfected: boolean;
+  isSuperSpreader: boolean;
+  isAntiMasker: boolean;
   currentMask: Mask;
   disinfectTimer: Phaser.Time.TimerEvent;
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture, params.frame);
+    this.id = params.id;
     this.x = params.x;
     this.y = params.y;
     this.texture = params.texture;
@@ -19,10 +23,26 @@ export default class Human extends Phaser.GameObjects.Sprite {
 
     this.isMasked = false;
     this.isInfected = params.isInfected;
+    this.isSuperSpreader = params.isSuperSpreader;
+    this.isAntiMasker = params.isAntiMasker;
 
     if (this.isInfected) {
       this.tint = colors.infectedTint;
     }
+
+    if (this.isSuperSpreader) {
+      this.setSuperSpreader();
+    }
+  }
+
+  private setSuperSpreader(): void {
+    this.scene.add
+      .text(this.x, this.y - 80, `SUPER-SPREADER`, {
+        font: `10px ${fontFamily}`,
+        color: colors.primary,
+      })
+      .setOrigin(0.5, 0)
+      .setAlign("center");
   }
 
   giveMask(mask: Mask) {
@@ -62,6 +82,17 @@ export default class Human extends Phaser.GameObjects.Sprite {
       targets: this,
       alpha: 0.5,
       duration: 300,
+      ease: "Sine.inOut",
+      loop: 3,
+      yoyo: true,
+    });
+  }
+
+  refuseMask(): void {
+    this.scene.tweens.add({
+      targets: this,
+      x: this.x - 10,
+      duration: 200,
       ease: "Sine.inOut",
       loop: 3,
       yoyo: true,

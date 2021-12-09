@@ -1,4 +1,4 @@
-import {EAssetKeys, EAudioKeys, EParticlesCount} from "./enums";
+import { EAssetKeys, EAudioKeys, EHumanIDs, EParticlesCount } from "./enums";
 
 export interface ICovidParticle {
   scene: Phaser.Scene;
@@ -19,7 +19,7 @@ export interface ICreateCovidParticles {
   itemsToCollideWith: Phaser.GameObjects.Group;
   onCollideCallback?: ArcadePhysicsCallback;
   group: Phaser.GameObjects.Group;
-  destroyable: boolean
+  destroyable: boolean;
 }
 
 export interface ICreateCovidParticlesFromFace {
@@ -28,12 +28,15 @@ export interface ICreateCovidParticlesFromFace {
 }
 
 export interface ICreateHumanoid {
+  id: EHumanIDs;
   assetKey: EAssetKeys;
   x: number;
   y: number;
   isInfected: boolean;
   scale: number;
   animationKey: EAudioKeys;
+  isAntiMasker?: boolean;
+  isSuperSpreader?: boolean;
 }
 
 export interface IGameStatusUI {

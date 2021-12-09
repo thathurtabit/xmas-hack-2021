@@ -23,6 +23,15 @@ export enum EAssetKeys {
   HUMAN_6 = "human-0006",
 }
 
+export enum EHumanIDs {
+  HUMAN_1 = "human1",
+  HUMAN_2 = "human2",
+  HUMAN_3 = "human3",
+  HUMAN_4 = "human4",
+  HUMAN_5 = "human5",
+  HUMAN_6 = "human6",
+}
+
 export enum EObjectKeys {
   GAME_STATUS_UI = "game-status-ui",
 }
