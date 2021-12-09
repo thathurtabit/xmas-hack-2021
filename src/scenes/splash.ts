@@ -2,6 +2,7 @@ import { EAssetKeys } from "./../settings/enums";
 import "phaser";
 import { EScenes } from "../settings/enums";
 import { colors, fontFamily, transition } from "../settings/constants";
+import { NO_SCORE_ID } from "../service/ScoreBoardService";
 
 export default class Splash extends Phaser.Scene {
   constructor() {
@@ -71,7 +72,10 @@ export default class Splash extends Phaser.Scene {
       .setAlign("center")
       .setInteractive()
       .on("pointerdown", () => {
-        this.scene.start(EScenes.HIGH_SCORES, { fromSplashScene: true });
+        this.scene.start(EScenes.HIGH_SCORES, {
+          fromSplashScene: true,
+          scoreID: NO_SCORE_ID,
+        });
       });
 
     this.tweens.add({
@@ -82,6 +86,5 @@ export default class Splash extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
-    
   }
 }
