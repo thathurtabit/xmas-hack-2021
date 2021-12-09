@@ -305,7 +305,7 @@ export default class Game extends Phaser.Scene {
         this.availableMasks--;
         this.addMask(human);
         this.gameStatusUI.setAvailableMasks(this.availableMasks);
-      } else if (this.availableMasks >= 0 && human.isMasked) {
+      } else if (human.isMasked) {
         this.removeMask(human);
       }
     });
