@@ -8,6 +8,7 @@ export type Score = {
     isPlayer: boolean
 }
 
+// TODO: POST score before calling this
 export const fetchScoreBoard: (String) => Promise<ScoreBoard> = (scoreId) =>
     fetch(`.netlify/functions/high-scores?scoreId=${scoreId}`)
         .then(res => res.json())
