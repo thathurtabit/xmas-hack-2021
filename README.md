@@ -1,5 +1,9 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/5a1f724a-af90-4e81-8a16-91152699f9be/deploy-status)](https://app.netlify.com/sites/xmas-hack-2021/deploys)
 
+#### View game here: [Mask Up, Look Sharp](https://xmas-hack-2021.netlify.app)
+
+_________
+
 # Phaser 3 TypeScript Project Template
 
 This quick-start project template combines Phaser 3.50 with [TypeScript 4](https://www.typescriptlang.org/) and uses [Rollup](https://rollupjs.org) for bundling.
