@@ -119,12 +119,12 @@ export default class Game extends Phaser.Scene {
   }
 
   private newInfections() {
-    // TODO: ADD COUGH AUDIO HERE
-
     this.faces.children.each((human: Human) => {
       this.addDisinfectTimer(human);
 
       if (human.isInfected && !human.isMasked) {
+
+        this.anims.play(human.animationKey, human);
 
         if (human.gender == Gender.MALE) {
           this.sound.play(EAudioKeys.COUGHING_MAN);
@@ -235,7 +235,8 @@ export default class Game extends Phaser.Scene {
       isInfected,
       isSuperSpreader,
       isAntiMasker,
-      gender
+      gender,
+      animationKey
     });
 
     this.physics.world.enable(human);
